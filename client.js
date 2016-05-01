@@ -1,4 +1,5 @@
 var example_app = require('./shared');
+var domvm = require('domvm');
 
 var app = new example_app.IsomorphicTestApp();
 var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
