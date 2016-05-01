@@ -28,8 +28,10 @@ app.get('/*', function (req, res) {
   var app = new example_app.IsomorphicTestApp();
   var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
   
-  var result = '<!doctype html><html><head></head><body>' + domvm.html(app.view.node) + '</body><script src="https://rawgit.com/leeoniya/domvm/1.x-dev/dist/domvm.min.js"></script>' +
-    '<script src="/client.js"></script></html>';
+  var result = '<!doctype html><html><head></head><body>' 
+    + domvm.html(app.view.node) 
+    + '</body><script src="https://rawgit.com/leeoniya/domvm/1.x-dev/dist/domvm.min.js"></script>' 
+    + '<script src="/client.js"></script></html>';
   res.send(result);
 });
 

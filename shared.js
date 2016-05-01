@@ -3,8 +3,15 @@ function IsomorphicTestAppView(vm, deps) {
         var route = deps.router.location();
 
         return route.name == 'home' 
-                ? ["div#foo", ['span', deps.app.content], ["br"], ["a", {href: deps.router.href("somewhere_else", {})}, "Go somewhere else"]] 
-                : ["div#bar", "We are somewhere else now.", ["br"], ["a", {href: deps.router.href("home", {})}, "Go home now"]];
+                ? ["div#foo", ['span', deps.app.content], 
+                    ["br"], 
+                    ["a", {href: deps.router.href("somewhere_else", {})}, 
+                    "Go somewhere else"]] 
+                : ["div#bar", 
+                    "We are somewhere else now.", 
+                    ["br"], 
+                    ["a", {href: deps.router.href("home", {})}, 
+                    "Go home now"]];
     };
 }
 
