@@ -3,7 +3,7 @@ function IsomorphicTestAppView(vm, deps) {
         var route = deps.router.location();
 
         return ['div#domvm', route.name == 'home' 
-                ? ["div#foo", ['span', deps.app.content], 
+                ? ["div#foo", ['span', deps.app.content()], 
                     ["br"], 
                     ["form",
                         ["label", "Change this before the client attaches to the server-rendered DOM:"],
@@ -24,7 +24,11 @@ function IsomorphicTestAppView(vm, deps) {
 function IsomorphicTestApp() {
     var self = this;
 
-    this.content = '';
+    var w = domvm.watch(function(e) {
+		if (typeof document !== 'undefined') self.view.redraw();
+	});
+
+    this.content = w.prop('');
 }
 
 function IsomorphicTestAppRouter(router, app) {
@@ -39,6 +43,7 @@ function IsomorphicTestAppRouter(router, app) {
         home: {
             path: '/',
             onenter: function (segs) {
+                console.log("onenter runs for home route");
                 document.title = "We are home";
                 app.view.redraw();
             }
@@ -46,6 +51,7 @@ function IsomorphicTestAppRouter(router, app) {
         somewhere_else: {
             path: '/somewhere_else/',
             onenter: function (segs) {
+                console.log("onenter runs for somewhere_else route");
                 document.title = "We are somewhere else";
                 app.view.redraw();
             }

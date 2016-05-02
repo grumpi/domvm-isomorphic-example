@@ -22,6 +22,5 @@ Requires the domvm repository in a sibling directory.
 
 ## Goals
 
-* use mutation observers
 * mock API calls that retrieve content
 * include API request results in the rendered HTML
