@@ -2,7 +2,7 @@ function IsomorphicTestAppView(vm, deps) {
     return function() {
         var route = deps.router.location();
 
-        return route.name == 'home' 
+        return ['div#domvm', route.name == 'home' 
                 ? ["div#foo", ['span', deps.app.content], 
                     ["br"], 
                     ["a", {href: deps.router.href("somewhere_else", {})}, 
@@ -11,14 +11,15 @@ function IsomorphicTestAppView(vm, deps) {
                     "We are somewhere else now.", 
                     ["br"], 
                     ["a", {href: deps.router.href("home", {})}, 
-                    "Go home now"]];
+                    "Go home now"]]
+                    ];
     };
 }
 
 function IsomorphicTestApp() {
     var self = this;
 
-    this.content = 'This is the server.';
+    this.content = '';
 }
 
 function IsomorphicTestAppRouter(router, app) {

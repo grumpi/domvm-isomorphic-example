@@ -1,15 +1,12 @@
 var example_app = require('./shared');
-var domvm = require('domvm');
+var domvm = require('./../domvm');
 
 var app = new example_app.IsomorphicTestApp();
 var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
 
-app.view.attach(document.body);
+app.view.attach(document.body.firstChild);
 
-setTimeout( function () {
-    app.content = "Now the client has loaded.";
-    console.log("Timeout");
-    app.view.redraw();
-}, 2000);
+app.content = "Now the client has loaded.";
+app.view.redraw();
 
 console.log("Client initialized!");

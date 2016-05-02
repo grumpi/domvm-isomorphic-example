@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var domvm = require('domvm');
+var domvm = require('./../domvm');
 var browserify = require('browserify-middleware');
 
 var example_app = require('./shared');
@@ -26,10 +26,14 @@ app.get('/*', function (req, res) {
   location.href = req.path;
   
   var app = new example_app.IsomorphicTestApp();
+  app.content = "This is coming from the server.";
+  
   var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
   
-  var result = '<!doctype html><html><head></head><body>' 
+  var result = '<!doctype html><html><head></head>'
+    + '<body>' 
     + domvm.html(app.view.node) 
+    + '</body>'
     + '<script src="/client.js"></script></html>';
   res.send(result);
 });
