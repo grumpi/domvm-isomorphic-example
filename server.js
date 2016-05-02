@@ -24,6 +24,7 @@ app.get('/*', function (req, res) {
   app.content("This is coming from the server.");
   
   var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
+  // now, somehow, I need to call my route's onenter function so that things are intialized?
   
   var result = '<!doctype html><html>'
     + '<head>'

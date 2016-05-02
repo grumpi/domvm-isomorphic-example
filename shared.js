@@ -1,3 +1,12 @@
+function renderList(data) {
+    var list = [];
+    var l = data.length;
+    for (var i=0; i<l; i++) {
+        list.push(['li', data[i].id, " ", data[i].value]);
+    }
+    return ["ul"].concat(list);
+}
+
 function IsomorphicTestAppView(vm, deps) {
     return function() {
         var route = deps.router.location();
@@ -10,6 +19,8 @@ function IsomorphicTestAppView(vm, deps) {
                         ["br"],
                         ["input"]
                     ],
+                    ["br"],
+                    ["div", deps.app.context.data ? renderList(deps.app.context.data): 'no data'],
                     ["a", {href: deps.router.href("somewhere_else", {})}, 
                     "Go somewhere else"]] 
                 : ["div#bar", 
@@ -29,6 +40,7 @@ function IsomorphicTestApp() {
 	});
 
     this.content = w.prop('');
+    this.context = {};
 }
 
 var IsomorphicTestAppRoutes = {
@@ -37,6 +49,14 @@ var IsomorphicTestAppRoutes = {
         onenter: function (router, app, segs) {
             var context = {};
             context.title = "home";
+            
+            // TODO: replace by a simulated AJAX request that fetches data when this is otherwise working
+            context.data = [
+            {id: 2, value: 'something'},
+            {id: 3, value: 'something else'},
+            {id: 42, value: 'a strange thing'},
+            ];
+            
             return context;
         },
     },
@@ -54,6 +74,7 @@ function wrapOnenter(router, app, onenter, route) {
     function wrappedOnenter(segs) {
         console.log("onenter runs for route '" + route + "'");
         var context = onenter(router, app, segs);
+        app.context = context;
         document.title = context.title;
         app.view.redraw();
     }
@@ -67,6 +88,7 @@ function wrapOnenterFunctions(router, app, routes) {
             actual_routes[route] = {};
             actual_routes[route].path = routes[route].path;
             actual_routes[route].onenter = wrapOnenter(router, app, routes[route].onenter, route);
+            actual_routes[route].onexit = routes[route].onexit;
         }
     }
     
