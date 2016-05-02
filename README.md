@@ -9,7 +9,7 @@ Requires the domvm repository in a sibling directory.
 
 `git clone https://github.com/leeoniya/domvm.git`
 
-`git clone https://github.com/grumpi/domvm-isomorphic-example`
+`git clone https://github.com/grumpi/domvm-isomorphic-example.git`
 
 `cd domvm-isomorphic-example`
 
