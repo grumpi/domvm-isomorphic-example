@@ -31,6 +31,48 @@ function IsomorphicTestApp() {
     this.content = w.prop('');
 }
 
+var IsomorphicTestAppRoutes = {
+    home: {
+        path: '/',
+        onenter: function (router, app, segs) {
+            var context = {};
+            context.title = "home";
+            return context;
+        },
+    },
+    somewhere_else: {
+        path: '/somewhere_else',
+        onenter: function (router, app, segs) {
+            var context = {};
+            context.title = "somewhere else";
+            return context;
+        },
+    },
+}
+
+function wrapOnenter(router, app, onenter, route) {
+    function wrappedOnenter(segs) {
+        console.log("onenter runs for route '" + route + "'");
+        var context = onenter(router, app, segs);
+        document.title = context.title;
+        app.view.redraw();
+    }
+    return wrappedOnenter;
+}
+
+function wrapOnenterFunctions(router, app, routes) {
+    var actual_routes = {};
+    for (var route in routes) {
+        if (routes.hasOwnProperty(route)) {
+            actual_routes[route] = {};
+            actual_routes[route].path = routes[route].path;
+            actual_routes[route].onenter = wrapOnenter(router, app, routes[route].onenter, route);
+        }
+    }
+    
+    return actual_routes;
+}
+
 function IsomorphicTestAppRouter(router, app) {
     router.config({
         useHist: true,
@@ -39,24 +81,7 @@ function IsomorphicTestAppRouter(router, app) {
         }
     });
 
-    return {
-        home: {
-            path: '/',
-            onenter: function (segs) {
-                console.log("onenter runs for home route");
-                document.title = "We are home";
-                app.view.redraw();
-            }
-        },
-        somewhere_else: {
-            path: '/somewhere_else/',
-            onenter: function (segs) {
-                console.log("onenter runs for somewhere_else route");
-                document.title = "We are somewhere else";
-                app.view.redraw();
-            }
-        },
-    };
+    return wrapOnenterFunctions(router, app, IsomorphicTestAppRoutes);
 }
 
 module.exports = {
