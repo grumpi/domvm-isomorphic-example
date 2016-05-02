@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     app = new example_app.IsomorphicTestApp();
     
     var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
+    app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
     app.view.attach(document.body.firstChild);
   
     app.content("Now the client is running.");

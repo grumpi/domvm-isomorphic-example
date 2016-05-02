@@ -46,7 +46,7 @@ function IsomorphicTestApp() {
 var IsomorphicTestAppRoutes = {
     home: {
         path: '/',
-        onenter: function (router, app, segs) {
+        createContext: function (router, app, segs) {
             var context = {};
             context.title = "home";
             
@@ -62,7 +62,7 @@ var IsomorphicTestAppRoutes = {
     },
     somewhere_else: {
         path: '/somewhere_else',
-        onenter: function (router, app, segs) {
+        createContext: function (router, app, segs) {
             var context = {};
             context.title = "somewhere else";
             return context;
@@ -70,10 +70,10 @@ var IsomorphicTestAppRoutes = {
     },
 }
 
-function wrapOnenter(router, app, onenter, route) {
+function wrapOnenter(router, app, createContext, route) {
     function wrappedOnenter(segs) {
         console.log("onenter runs for route '" + route + "'");
-        var context = onenter(router, app, segs);
+        var context = createContext(router, app, segs);
         app.context = context;
         document.title = context.title;
         app.view.redraw();
@@ -87,7 +87,7 @@ function wrapOnenterFunctions(router, app, routes) {
         if (routes.hasOwnProperty(route)) {
             actual_routes[route] = {};
             actual_routes[route].path = routes[route].path;
-            actual_routes[route].onenter = wrapOnenter(router, app, routes[route].onenter, route);
+            actual_routes[route].onenter = wrapOnenter(router, app, routes[route].createContext, route);
             actual_routes[route].onexit = routes[route].onexit;
         }
     }
@@ -98,9 +98,6 @@ function wrapOnenterFunctions(router, app, routes) {
 function IsomorphicTestAppRouter(router, app) {
     router.config({
         useHist: true,
-        init: function() {
-            app.view = domvm.view(IsomorphicTestAppView, {app: app, router: router});
-        }
     });
 
     return wrapOnenterFunctions(router, app, IsomorphicTestAppRoutes);
@@ -109,4 +106,6 @@ function IsomorphicTestAppRouter(router, app) {
 module.exports = {
     IsomorphicTestApp: IsomorphicTestApp,
     IsomorphicTestAppRouter: IsomorphicTestAppRouter,
+    IsomorphicTestAppRoutes: IsomorphicTestAppRoutes,
+    IsomorphicTestAppView: IsomorphicTestAppView,
 };
