@@ -33,8 +33,9 @@ app.get('/*', function (req, res) {
   var result = '<!doctype html><html><head></head>'
     + '<body>' 
     + domvm.html(app.view.node) 
+    + '<script src="/client.js"></script>'
     + '</body>'
-    + '<script src="/client.js"></script></html>';
+    + '</html>';
   res.send(result);
 });
 
