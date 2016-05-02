@@ -5,6 +5,11 @@ function IsomorphicTestAppView(vm, deps) {
         return ['div#domvm', route.name == 'home' 
                 ? ["div#foo", ['span', deps.app.content], 
                     ["br"], 
+                    ["form",
+                        ["label", "Change this before the client attaches to the server-rendered DOM:"],
+                        ["br"],
+                        ["input"]
+                    ],
                     ["a", {href: deps.router.href("somewhere_else", {})}, 
                     "Go somewhere else"]] 
                 : ["div#bar", 
@@ -25,7 +30,6 @@ function IsomorphicTestApp() {
 function IsomorphicTestAppRouter(router, app) {
     router.config({
         useHist: true,
-        root: "/test-app",
         init: function() {
             app.view = domvm.view(IsomorphicTestAppView, {app: app, router: router});
         }
