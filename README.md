@@ -7,13 +7,13 @@ This doesn't really work yet. And there's a little bit of hacky stuff going on.
 
 Requires the domvm repository in a sibling directory.
 
-```git clone https://github.com/leeoniya/domvm.git
+`git clone https://github.com/leeoniya/domvm.git`
 
-git clone https://github.com/grumpi/domvm-isomorphic-example
+`git clone https://github.com/grumpi/domvm-isomorphic-example`
 
-cd domvm-isomorphic-example
+`cd domvm-isomorphic-example`
 
-nodejs server.js```
+`nodejs server.js`
 
 ## Status
 
