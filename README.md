@@ -18,7 +18,7 @@ Requires the domvm repository in a sibling directory.
 ## Status
 
 * Server-side routing works with a somewhat hacky workaround of adding variables to the GLOBAL object of Nodejs. TODO: This is not necessarily thread-safe. As soon as something async happens between setting and using these global variables, they might get overwritten.
-* Client-side rehydration of the server-side rendered DOM works.
+* Client-side rehydration of the server-side rendered DOM would work, but there is a catch: as soon as there's some kind of data-binding for input elements, the input elements get reset when the client attaches. Inputs that don't have data-binding retain their value when the client attaches. In the current state of the example, we wipe the DOM and mount the app on an empty body when the client starts to run.
 
 ## Goals
 
