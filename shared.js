@@ -27,7 +27,6 @@ function ContactListWidget (vm, deps) {
         // startswith
         return el.value.toLowerCase().lastIndexOf(query.toLowerCase(), 0) === 0;
     }
-
     
     function renderContact(el) {
         return el.value;
@@ -36,15 +35,13 @@ function ContactListWidget (vm, deps) {
     return function () {
         return ['div.contact-list-widget',
             ["form",
-                ["label", "Type to search"],
-                ["br"],
                 deps.server_rendered 
                     ? ["input", {disabled: true, value: "We're still loading!"}]
-                    : ["input", {value: query, oninput: refreshContactList}]
+                    : ["input", {placeholder: "Type to search...", value: query, oninput: refreshContactList}]
                 ],
-            deps.data 
-                ? renderList(deps.data().filter(matchesQuery), renderContact) 
-                : ['ul', ['li', "no data"]]
+                deps.data
+                    ? renderList(deps.data().filter(matchesQuery), renderContact) 
+                    : ['ul', ['li', "Data could not be found!"]]
             ];
     }
 }
@@ -120,9 +117,6 @@ var IsomorphicTestAppRoutes = {
             {id: 42, value: 'Janine'},
             {id: 42, value: 'Lisa'},
             {id: 42, value: 'Max'},
-            {id: 42, value: 'Peter'},
-            {id: 42, value: 'Peter'},
-            {id: 42, value: 'Peter'},
             ]);
             return ctx;
         },
