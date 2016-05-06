@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     
     var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
     app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
-    app.view.attach(document.body.firstChild);
-  
-    app.content("Now the client is running.");
+    document.body.removeChild(document.body.firstChild);
+    app.view.mount(document.body);
+ 
     router.refresh();
 
     console.log("Client initialized!");

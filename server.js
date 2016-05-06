@@ -21,16 +21,18 @@ app.get('/*', function (req, res) {
   location.href = req.path;
   
   var app = new example_app.IsomorphicTestApp();
-  app.content("This is coming from the server.");
+  app.server_rendered = true;
   
   var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
-
-  app.context = example_app.IsomorphicTestAppRoutes[router.location().name].createContext(router, app);
+  
+  if (router.location().name) {
+    app.context = example_app.IsomorphicTestAppRoutes[router.location().name].context(router, app);
+  }
   app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
   
   var result = '<!doctype html><html>'
     + '<head>'
-    + '<title>Loading...</title>'
+    + '<title>'+ app.context.title +'</title>'
     + '</head>'
     + '<body>' 
     + domvm.html(app.view.node) 
