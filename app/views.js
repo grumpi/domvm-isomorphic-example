@@ -1,10 +1,10 @@
 var w = require('./widgets');
+var server_rendered = require('./server-or-client');
 
 function IsomorphicTestAppView(vm, deps) {
     return function() {
         var route = deps.router.location();
         var result;
-        var server_rendered = deps.app.server_rendered;
         
         switch (route.name) {
             case 'home':
@@ -14,7 +14,7 @@ function IsomorphicTestAppView(vm, deps) {
                 break;
             case 'contact_list':
                 result = ["div.contact-list", 
-                    [w.ContactListWidget, {data: deps.app.context.data, server_rendered: server_rendered }],
+                    [w.ContactListWidget, {data: deps.app.context.data }],
                     ["br"], 
                     ["a", {href: deps.router.href("home", {})}, 
                     "Go home now"]];
@@ -27,7 +27,7 @@ function IsomorphicTestAppView(vm, deps) {
         
         var txt = server_rendered ? "Server" : "Client";
         
-        return ['div#domvm', 
+        return ['div#domvm', {class: server_rendered ? '.server' : '.client'}, 
             ["div", txt],
             ['br'], ['br'],
             result];

@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "basic example of rendering html on the server with domvm",
   "main": "server.js",
+  "browser": {
+    "./app/fetch/index.js": "./app/fetch/client.js",
+    "./app/server-or-client/index.js": "./app/server-or-client/client.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +14,8 @@
   "license": "BSD-2-Clause",
   "dependencies": {
     "express": "~4.13.4",
-    "browserify-middleware": "~7.0.0"
+    "browserify-middleware": "~7.0.0",
+    "node-fetch": "~1.5.2",
+    "promise": "~7.1.1"
   }
 }

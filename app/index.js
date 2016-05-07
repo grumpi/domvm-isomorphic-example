@@ -1,4 +1,6 @@
 var v = require('./views');
+var f = require('./fetch');
+var Promise = require('promise');
 
 function IsomorphicTestApp() {
     var self = this;
@@ -8,7 +10,6 @@ function IsomorphicTestApp() {
 	});
 
     this.context = {};
-    this.server_rendered = false;
 }
 
 var IsomorphicTestAppRoutes = {
@@ -24,22 +25,27 @@ var IsomorphicTestAppRoutes = {
         path: '/contact-list/',
         context: function (router, app, segs) {
             var ctx = {};
+            
             ctx.title = "Contact list";
-            
-            function onOk (resp) {
-                ctx.data(resp);
-                app.view.redraw();
-            }
-            
-            function setError(err) {
-                console.log(err.message);
-            }
-            
             ctx.data = app.w.prop([]);
             
-            if (!app.server_rendered) {
-                app.w.get('http://127.0.0.1:8000/api/contact-list/', [onOk, setError]);
-            }
+            ctx.ready = new Promise(
+                function (result, error) {
+                    f.fetch(app, 'http://127.0.0.1:8000/api/contact-list/').then(
+                        function (res) {
+                            console.log("Ready!");
+                            console.log(res);
+
+                            ctx.data(res);
+                            result();
+                        },
+                        function (err) {
+                            console.log(err);
+                            error();
+                        }
+                    );
+                }
+            );
             
             return ctx;
         },

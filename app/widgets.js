@@ -1,3 +1,5 @@
+var server_rendered = require('./server-or-client');
+
 function renderList(data, f) {
     var list = [];
     
@@ -34,7 +36,7 @@ function ContactListWidget (vm, deps) {
     return function () {
         return ['div.contact-list-widget',
             ["form",
-                deps.server_rendered 
+                server_rendered 
                     ? ["input", {disabled: true, value: "We're still loading!"}]
                     : ["input", {placeholder: "Type to search...", value: query, oninput: refreshContactList}]
                 ],
