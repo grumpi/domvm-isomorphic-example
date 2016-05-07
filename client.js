@@ -1,5 +1,5 @@
 var domvm = require('./../domvm');
-var example_app = require('./shared');
+var example_app = require('./app');
 
 var app = null; 
 

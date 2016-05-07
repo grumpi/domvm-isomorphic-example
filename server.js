@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var domvm = require('./../domvm');
 var browserify = require('browserify-middleware');
-var example_app = require('./shared');
+var example_app = require('./app');
 
 GLOBAL.window = {};
 
@@ -14,6 +14,19 @@ GLOBAL.location = {
 };
 
 GLOBAL.HTMLElement = function () {};
+
+app.get('/api', function (req, res) {
+   res.json([
+            {id: 2, value: 'Herbert'},
+            {id: 3, value: 'Susan'},
+            {id: 42, value: 'Peter'},
+            {id: 42, value: 'Greg'},
+            {id: 42, value: 'Hans'},
+            {id: 42, value: 'Janine'},
+            {id: 42, value: 'Lisa'},
+            {id: 42, value: 'Max'},
+            ]);
+});
 
 app.get('/client.js', browserify('./client.js'));
 
