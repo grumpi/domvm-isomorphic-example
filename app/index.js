@@ -26,10 +26,7 @@ var IsomorphicTestAppRoutes = {
             var ctx = {};
             ctx.title = "Contact list";
             
-            // TODO: replace by a simulated AJAX request that fetches data when this is otherwise working
-            
             function onOk (resp) {
-                console.log(resp);
                 ctx.data(resp);
                 app.view.redraw();
             }
@@ -41,7 +38,7 @@ var IsomorphicTestAppRoutes = {
             ctx.data = app.w.prop([]);
             
             if (!app.server_rendered) {
-                app.w.get('http://127.0.0.1:8000/api/', [onOk, setError]);
+                app.w.get('http://127.0.0.1:8000/api/contact-list/', [onOk, setError]);
             }
             
             return ctx;

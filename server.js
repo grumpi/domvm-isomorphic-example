@@ -15,7 +15,7 @@ GLOBAL.location = {
 
 GLOBAL.HTMLElement = function () {};
 
-app.get('/api', function (req, res) {
+app.get('/api/contact-list/', function (req, res) {
    res.json([
             {id: 2, value: 'Herbert'},
             {id: 3, value: 'Susan'},
