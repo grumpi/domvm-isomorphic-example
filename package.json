@@ -16,6 +16,8 @@
     "express": "~4.13.4",
     "browserify-middleware": "~7.0.0",
     "node-fetch": "~1.5.2",
-    "promise": "~7.1.1"
+    "promise": "~7.1.1",
+    "compression": "~1.6.1",
+    "html-escape": "~2.0.0"
   }
 }

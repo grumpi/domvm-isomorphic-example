@@ -1,6 +1,7 @@
 var v = require('./views');
 var f = require('./fetch');
 var Promise = require('promise');
+var server = require('./server-or-client');
 
 function IsomorphicTestApp() {
     var self = this;
@@ -10,6 +11,9 @@ function IsomorphicTestApp() {
 	});
 
     this.context = {};
+    
+    
+    this.initData = {};
 }
 
 var IsomorphicTestAppRoutes = {
@@ -29,23 +33,30 @@ var IsomorphicTestAppRoutes = {
             ctx.title = "Contact list";
             ctx.data = app.w.prop([]);
             
-            ctx.ready = new Promise(
-                function (result, error) {
-                    f.fetch(app, 'http://127.0.0.1:8000/api/contact-list/').then(
-                        function (res) {
-                            console.log("Ready!");
-                            console.log(res);
+            console.log(['initData', app.initData]);
+            
+            if (!server && app.initData['contact-list']) {
+                console.log("We discovered the contact list.");
+                ctx.data(app.initData['contact-list']);
+            } else {
+                ctx.ready = new Promise(
+                    function (result, error) {
+                        f.fetch(app, 'http://127.0.0.1:8000/api/contact-list/').then(
+                            function (res) {
+                                console.log("Ready!");
+                                console.log(res);
 
-                            ctx.data(res);
-                            result();
-                        },
-                        function (err) {
-                            console.log(err);
-                            error();
-                        }
-                    );
-                }
-            );
+                                ctx.data(res);
+                                result();
+                            },
+                            function (err) {
+                                console.log(err);
+                                error();
+                            }
+                        );
+                    }
+                );
+            }
             
             return ctx;
         },

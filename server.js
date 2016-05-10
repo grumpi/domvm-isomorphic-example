@@ -4,6 +4,8 @@ var domvm = require('./../domvm');
 var browserify = require('browserify-middleware');
 var example_app = require('./app');
 var resources = require('./resources');
+var compression = require('compression');
+var html_escape = require('html-escape');
 
 GLOBAL.window = {};
 
@@ -16,6 +18,8 @@ GLOBAL.location = {
 
 GLOBAL.HTMLElement = function () {};
 
+app.use(compression());
+
 app.get('/api/contact-list/', function (req, res) {
    res.json(resources.contactList);
 });
@@ -26,6 +30,7 @@ app.get('/*', function (req, res) {
     
     function render(app, res) {
         app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
+        var data_to_inline = {'contact-list': resources.contactList};
     
         var result = '<!doctype html><html>'
         + '<head>'
@@ -33,6 +38,7 @@ app.get('/*', function (req, res) {
         + '</head>'
         + '<body>' 
         + domvm.html(app.view.node) 
+        + '<script id="resources" type="application/json">' + html_escape(JSON.stringify(data_to_inline)) + "</script>"
         + '<script src="/client.js"></script>'
         + '</body>'
         + '</html>';
@@ -66,4 +72,5 @@ app.get('/*', function (req, res) {
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
+
 
