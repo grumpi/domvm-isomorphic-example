@@ -1,17 +1,4 @@
-var server_rendered = require('./server-or-client');
-
-function renderList(data, f) {
-    var list = [];
-    
-    var l = data.length;
-    for (var i=0; i<l; i++) {
-        list.push(['li', f(data[i])]);
-    }
-    if (l === 0) {
-        list.push(['li', "No results."]);
-    }
-    return ["ul"].concat(list);
-}
+var t = require('./templates');
 
 function ContactListWidget (vm, deps) {
     var query = '';
@@ -35,18 +22,13 @@ function ContactListWidget (vm, deps) {
     
     return function () {
         return ['div.contact-list-widget',
-            ["form",
-                server_rendered 
-                    ? ["input", {disabled: true, value: "We're still loading!"}]
-                    : ["input", {placeholder: "Type to search...", value: query, oninput: refreshContactList}]
-                ],
-                deps.data
-                    ? renderList(deps.data().filter(matchesQuery), renderContact) 
-                    : ['ul', ['li', "Data could not be found!"]]
+            ["form", t.renderInput({placeholder: "Type to search...", value: query, oninput: refreshContactList})],
+            deps.data
+                ? t.renderList(deps.data().filter(matchesQuery), renderContact) 
+                : ['ul', ['li', "Data could not be found!"]]
             ];
     }
 }
-
 
 module.exports = {
     ContactListWidget: ContactListWidget,

@@ -33,8 +33,6 @@ var IsomorphicTestAppRoutes = {
             ctx.title = "Contact list";
             ctx.data = app.w.prop([]);
             
-            console.log(['initData', app.initData]);
-            
             if (!server && app.initData['contact-list']) {
                 console.log("We discovered the contact list.");
                 ctx.data(app.initData['contact-list']);
