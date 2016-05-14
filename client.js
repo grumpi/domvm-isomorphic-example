@@ -1,6 +1,7 @@
 require('./../domvm/dist/polyfills.min');
 var domvm = require('./../domvm');
 var example_app = require('./app');
+var kizzy = require('kizzy');
 
 var app = null; 
 
@@ -18,7 +19,12 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function () {
         app = new example_app.IsomorphicTestApp();
         
-        app.initData = initData;
+        var cache = kizzy('request-cache');
+        Object.keys(initData).map(function (k) {
+            cache.set(k, initData[k]);
+            console.log(['set cache', k, initData[k], cache.get(k)]);
+        });
+        
     
         var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
         app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
@@ -26,7 +32,5 @@ document.addEventListener("DOMContentLoaded", function() {
         app.view.mount(document.body);
  
         router.refresh();
-
-        console.log("Client initialized!");
     }, 2000);
 });

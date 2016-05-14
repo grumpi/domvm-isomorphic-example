@@ -14,6 +14,7 @@ function IsomorphicTestApp() {
     
     
     this.initData = {};
+    this.apiURL = 'http://127.0.0.1:8000/api/';
 }
 
 var IsomorphicTestAppRoutes = {
@@ -33,28 +34,21 @@ var IsomorphicTestAppRoutes = {
             ctx.title = "Contact list";
             ctx.data = app.w.prop([]);
             
-            if (!server && app.initData['contact-list']) {
-                console.log("We discovered the contact list.");
-                ctx.data(app.initData['contact-list']);
-            } else {
-                ctx.ready = new Promise(
-                    function (result, error) {
-                        f.fetch(app, 'http://127.0.0.1:8000/api/contact-list/').then(
-                            function (res) {
-                                console.log("Ready!");
-                                console.log(res);
-
-                                ctx.data(res);
-                                result();
-                            },
-                            function (err) {
-                                console.log(err);
-                                error();
-                            }
-                        );
-                    }
-                );
-            }
+            ctx.ready = new Promise(
+                function (result, error) {
+                    f.fetch(app, 'contact-list').then(
+                        function (res) {
+                            console.log("Ready!");
+                            ctx.data(res);
+                            result();
+                        },
+                        function (err) {
+                            console.log(err);
+                            error();
+                        }
+                    );
+                }
+            );
             
             return ctx;
         },

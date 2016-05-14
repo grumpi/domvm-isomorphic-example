@@ -21,7 +21,8 @@ GLOBAL.HTMLElement = function () {};
 app.use(compression());
 
 app.get('/api/contact-list/', function (req, res) {
-   res.json(resources.contactList);
+    console.log('serving API');
+    res.json(resources.contactList);
 });
 
 app.get('/client.js', browserify('./client.js'));

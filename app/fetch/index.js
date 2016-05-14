@@ -1,8 +1,8 @@
 var resources = require('../../resources');
 var Promise = require('promise');
-var f = require('node-fetch');
-f.Promise = Promise;
-GLOBAL.fetch = f;
+//var f = require('node-fetch');
+//f.Promise = Promise;
+//GLOBAL.fetch = f;
 
 module.exports = {
     fetch: function (app, url, callbacks) {
