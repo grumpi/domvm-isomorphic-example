@@ -2,6 +2,7 @@ require('./../domvm/dist/polyfills.min');
 var domvm = require('./../domvm');
 var example_app = require('./app');
 var kizzy = require('kizzy');
+var cache = require('./app/cache');
 
 var app = null; 
 
@@ -19,10 +20,9 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function () {
         app = new example_app.IsomorphicTestApp();
         
-        var cache = kizzy('request-cache');
+        app.cache = cache;
         Object.keys(initData).map(function (k) {
-            cache.set(k, initData[k]);
-            console.log(['set cache', k, initData[k], cache.get(k)]);
+            app.cache.set(k, initData[k]);
         });
         
     

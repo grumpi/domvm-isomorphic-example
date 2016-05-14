@@ -9,6 +9,7 @@ function IsomorphicTestAppView(vm, deps) {
         switch (route.name) {
             case 'home':
                 result = ["div.home", 
+                    ['div', deps.app.context.data? deps.app.context.data() : 'Loading...'],
                     ["a", {href: deps.router.href("contact_list", {})}, 
                     "Contact List"]];
                 break;

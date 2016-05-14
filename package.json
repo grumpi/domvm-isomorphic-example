@@ -4,7 +4,7 @@
   "description": "basic example of rendering html on the server with domvm",
   "main": "server.js",
   "browser": {
-    "./app/fetch/index.js": "./app/fetch/client.js",
+    "./app/store/index.js": "./app/store/client.js",
     "./app/server-or-client/index.js": "./app/server-or-client/client.js"
   },
   "scripts": {

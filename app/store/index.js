@@ -5,12 +5,14 @@ var Promise = require('promise');
 //GLOBAL.fetch = f;
 
 module.exports = {
-    fetch: function (app, url, callbacks) {
-        console.log("this is where we fetch on the server");
+    fetch: function (app, what, callbacks) {
+        console.log(["fetching resources on the server", what]);
         
         return new Promise(
             function (res, err) {
-                res(resources.contactList);
+                
+                app.data_to_inline[what] = resources[what];
+                res(resources[what]);
             });
         
         /*

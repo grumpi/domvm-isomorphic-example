@@ -1,13 +1,10 @@
-var kizzy = require('kizzy');
-var cache = kizzy('request-cache');
 var Promise = require('promise');
 
 module.exports = {
     fetch: function (app, what, callbacks) {
-        console.log("fetching on the client");
+        console.log(["fetching resources on the client", what]);
         var url = app.apiURL + what + '/';
-        var cached = cache.get(what);
-        console.log(['get cache', what, cached]);
+        var cached = app.cache.get(what);
         
         if (cached) {
             console.log("We had something cached.");
@@ -17,7 +14,12 @@ module.exports = {
                 });
         } else {
             console.log("doing app.w.get");
-            return app.w.get(url, callbacks);
+            return app.w.get(url, callbacks).then(
+                function (res) {
+                    app.cache.set(what, res);
+                    return res;
+                }
+            );
         }
     },
 };

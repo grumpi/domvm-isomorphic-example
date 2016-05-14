@@ -1,5 +1,5 @@
 var v = require('./views');
-var f = require('./fetch');
+var store = require('./store');
 var Promise = require('promise');
 var server = require('./server-or-client');
 
@@ -12,7 +12,6 @@ function IsomorphicTestApp() {
 
     this.context = {};
     
-    
     this.initData = {};
     this.apiURL = 'http://127.0.0.1:8000/api/';
 }
@@ -23,6 +22,25 @@ var IsomorphicTestAppRoutes = {
         context: function (router, app, segs) {
             var ctx = {};
             ctx.title = "home";
+            
+            ctx.data = app.w.prop('Loading...');
+            
+            ctx.ready = new Promise(
+                function (result, error) {
+                    store.fetch(app, 'welcome-message').then(
+                        function (res) {
+                            console.log("Context ready!");
+                            ctx.data(res);
+                            result();
+                        },
+                        function (err) {
+                            console.log(err);
+                            error();
+                        }
+                    );
+                }
+            );
+            
             return ctx;
         },
     },
@@ -36,9 +54,9 @@ var IsomorphicTestAppRoutes = {
             
             ctx.ready = new Promise(
                 function (result, error) {
-                    f.fetch(app, 'contact-list').then(
+                    store.fetch(app, 'contact-list').then(
                         function (res) {
-                            console.log("Ready!");
+                            console.log("Context ready!");
                             ctx.data(res);
                             result();
                         },
