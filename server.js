@@ -28,6 +28,10 @@ app.get('/api/:what/', function (req, res) {
 
 app.get('/client.js', browserify('./client.js'));
 
+app.get('/favicon.ico', function (req, res) {
+    res.status(404).send("Not found");
+});
+    
 app.get('/*', function (req, res) {
     console.log(['serving', req.path]);
     
