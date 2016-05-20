@@ -48,8 +48,8 @@ The term "isomorphism" is (mis-)used in the JavaScript community to mean somethi
 
 Some considerations commonly brought up:
 
-1. Search engine indexing of content in the Single-Page-Application. This seems to be less relevant nowadays since the major search engines seem to run the JavaScript and, thus, index what is rendered by the Single-Page-Application.
-2. Graceful degradation. As in, letting people on less cpable browsing agents (which are not supported by the Single-Page-Application) peruse content and, possibly, some of the interactive features of the Single-Page-Application.
+1. Search engine indexing of content in the Single-Page-Application. This seems to be less relevant nowadays since the major search engines seem to run the JavaScript and, thus, index what is rendered by the Single-Page-Application. Search engines that don't run JavaScript won't index the information to be found under the URLs of the Single-Page-Application.
+2. Graceful degradation. As in, letting people on less cpable browsing agents (which are not supported by the Single-Page-Application) peruse content and, possibly, some of the interactive features of the Single-Page-Application. When the user's browser can't run the Single-Page-Application, that can be a problem.
 3. "Time to first content". How long it takes to see what's on the page when you click a link leading from the rest of the web to some content in the Single-Page-Application. Naively set-up Single-Page-Applications are notorious for first having to load their own JavaScript, running that, then having to go for another roundtrip (or several) to the server(s) to fetch the actual content. This is **slow**. Whether this initial slowness is perceived as a minor nuisance or a major headache depends on the user's connection.
 
 **So, if Single-Page-Applications are so horrible, why do people even build them in the first place?**
@@ -69,9 +69,9 @@ There seems to be no substantial difference between the difficulty of
 1. adding to a no-JavaScript HTML website until it can behave exactly like a rich, interactive Single-Page-Application and
 2. adding to a Single-Page-Application until it can behave exactly like a no-JavaScript HTML website.
 
-Going from full to empty, or from empty to full are both either very difficult or time-consuming to do. The time-consuming way, but not difficult way is to create a separate no-JavaScript HTML website and a Single-Page-Application for the different user bases.
+Going from full to empty, or from empty to full are both either very difficult or time-consuming to do. The time-consuming way is to create a separate no-JavaScript HTML website and a Single-Page-Application for the different user bases.
 
-Going from full to half-full, or from empty to half-full seems less involved.
+Not going all the way seems less involved.
 
 It's not hard to add capabilities to a Single-Page-Application stack that allow rendering HTML pages on the server so that users on all kinds of browsing agents can see the content inside the Single-Page-Application.
 
@@ -82,7 +82,7 @@ Where you want to start comes down to what is valued more:
 1. the ability to be used by as many people as possible, or
 2. the ability to provide a rich, interactive experience at low development/maintenance cost to those who can use the site.
 
-For my purposes, though, the philosophical/ideological discussion around graceful degradation versus progressive enhancement is of little importance. For me, the point of an "Isomorphic Single-Page-Application" is all about...
+For my purposes, though, the philosophical/ideological discussion around graceful degradation versus progressive enhancement is of little importance. I see the point of an "Isomorphic Single-Page-Application" in...
 
 ### Making a good first impression
 
