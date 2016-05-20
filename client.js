@@ -28,9 +28,22 @@ document.addEventListener("DOMContentLoaded", function() {
     
         var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
         app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
+        
+        
+        // restoring the scroll position when mounted
+        app.scrollX = document.body.scrollLeft;
+        app.scrollY = document.body.scrollTop;
+        console.log(["scrollPosition", app.scrollX, app.scrollY]);
+        
+        app.view.hook("didMount", function () {
+            scrollTo(app.scrollX, app.scrollY);
+            console.log(["scrollTo", app.scrollX, app.scrollY]);
+        });
+        
         document.body.removeChild(document.body.firstChild);
         app.view.mount(document.body);
  
         router.refresh();
+        
     }, 2000);
 });

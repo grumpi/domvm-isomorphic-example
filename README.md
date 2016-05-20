@@ -16,15 +16,13 @@ Requires the domvm repository in a sibling directory.
 ## Status
 
 * Server-side routing works with a somewhat hacky workaround of adding variables to the GLOBAL object of Nodejs. TODO: This is not necessarily thread-safe. As soon as something async happens between setting and using these global variables, they might get overwritten.
-* When the client starts to run, the server-rendered DOM is wiped and the client renders anew.
+* When the client starts to run, the server-rendered DOM is wiped and the client renders anew. Scroll position is restored.
 * `store/` provides an interface for fetching from the data API from either client or server.
 * the nodejs server in this example serves both the data API and the SPA. In a realistic situation, it's likely that the data API is served by a separate server. For that, we can send requests to the data API server in `store/index.js` instead of reading data from the resource-variable.
 * the nodejs server collects data needed for the context of the route that is served and includes that in the rendered HTML.
 * the SPA client caches what it got from the `store/` for a few seconds.
 * the SPA client initializes its cache with the inlined data included in the server-rendered HTML.
 
-TODO:
-* scroll position is lost when the client initializes. Client code needs to restore that after it rendered.
 
 ### Rehydration of the Server-Rendered DOM?
 
