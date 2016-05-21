@@ -8,11 +8,10 @@ module.exports = {
     fetch: function (app, what) {
         console.log(["fetching resources on the server", what]);
         
-        return new Promise(
-            function (result, error) {
-                
-                app.data_to_inline[what] = resources[what];
-                result(resources[what]);
+        return Promise.resolve(resources[what]).then(
+            function (res) {
+                app.data_to_inline[what] = res;
+                return res;
             });
         
         /*

@@ -8,11 +8,7 @@ module.exports = {
         
         if (cached) {
             console.log("We had something cached.");
-            
-            return new Promise(
-                function (result, error) {
-                    result(cached);
-                });
+            return Promise.resolve(cached);
         } else {
             function onOk (res) {
                 app.cache.set(what, res);
