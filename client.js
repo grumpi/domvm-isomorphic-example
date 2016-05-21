@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var dataElement = document.getElementById('resources');
     var jsonText = dataElement.textContent || dataElement.innerText;
     var initData = JSON.parse(html_unescape(jsonText));
-    console.log(['I discovered the following data:', initData]);
+    console.log(['I discovered the following data dumped by the server into the HTML document:', initData]);
   
     setTimeout(function () {
         app = new example_app.IsomorphicTestApp();
@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded", function() {
         
         
         // restoring the scroll position when mounted
-        app.scrollX = document.body.scrollLeft;
-        app.scrollY = document.body.scrollTop;
-        console.log(["scrollPosition", app.scrollX, app.scrollY]);
+        app.scrollPosition = [document.body.scrollLeft, document.body.scrollTop];
+        console.log(["scrollPosition", app.scrollPosition]);
         
         app.view.hook("didMount", function () {
-            scrollTo(app.scrollX, app.scrollY);
-            console.log(["scrollTo", app.scrollX, app.scrollY]);
+            scrollTo.apply(window, app.scrollPosition);
+            console.log(["scrollTo", app.scrollPosition]);
         });
+        
         
         document.body.removeChild(document.body.firstChild);
         app.view.mount(document.body);

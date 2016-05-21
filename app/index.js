@@ -1,18 +1,21 @@
 var v = require('./views');
 var store = require('./store');
 var Promise = require('promise');
-var server = require('./server-or-client');
 
 function IsomorphicTestApp() {
     var self = this;
 
     this.w = domvm.watch(function(e) {
-		if (typeof document !== 'undefined') self.view.redraw();
+		if (typeof document !== 'undefined') {
+            console.log(["domvm.watch triggered redraw", e]);
+            self.view.redraw();
+        }
 	});
 
-    this.context = {};
+    this.errorMessage = this.w.prop(null);
     
-    this.initData = {};
+    this.context = null;
+    
     this.apiURL = 'http://127.0.0.1:8000/api/';
 }
 
@@ -27,15 +30,13 @@ var IsomorphicTestAppRoutes = {
             
             ctx.ready = new Promise(
                 function (result, error) {
-                    store.fetch(app, 'welcome-message').then(
+                    store.fetch(app, 'welcome-message', //).then(
                         function (res) {
                             console.log("Context ready!");
                             ctx.data(res);
-                            result();
                         },
                         function (err) {
                             console.log(err);
-                            error();
                         }
                     );
                 }
@@ -50,19 +51,17 @@ var IsomorphicTestAppRoutes = {
             var ctx = {};
             
             ctx.title = "Contact list";
-            ctx.data = app.w.prop([]);
+            ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);
             
             ctx.ready = new Promise(
                 function (result, error) {
-                    store.fetch(app, 'contact-list').then(
+                    store.fetch(app, 'contact-list',
                         function (res) {
                             console.log("Context ready!");
                             ctx.data(res);
-                            result();
                         },
                         function (err) {
                             console.log(err);
-                            error();
                         }
                     );
                 }
@@ -76,6 +75,7 @@ var IsomorphicTestAppRoutes = {
 function makeOnenter(router, app, context, route) {
     function wrappedOnenter(segs) {
         console.log("onenter runs for route '" + route + "'");
+        app.errorMessage(null);
         app.context = context(router, app, segs);
         document.title = app.context.title;
         app.view.redraw();
@@ -84,17 +84,17 @@ function makeOnenter(router, app, context, route) {
 }
 
 function makeDomvmRoutes(router, app, routes) {
-    var actual_routes = {};
+    var domvmRoutes = {};
     for (var route in routes) {
         if (routes.hasOwnProperty(route)) {
-            actual_routes[route] = {};
-            actual_routes[route].path = routes[route].path;
-            actual_routes[route].onenter = makeOnenter(router, app, routes[route].context, route);
-            actual_routes[route].onexit = routes[route].onexit;
+            domvmRoutes[route] = {};
+            domvmRoutes[route].path = routes[route].path;
+            domvmRoutes[route].onenter = makeOnenter(router, app, routes[route].context, route);
+            domvmRoutes[route].onexit = routes[route].onexit;
         }
     }
     
-    return actual_routes;
+    return domvmRoutes;
 }
 
 function IsomorphicTestAppRouter(router, app) {

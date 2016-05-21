@@ -8,9 +8,6 @@ module.exports = {
         for (var i=0; i<l; i++) {
             list.push(['li', f(data[i])]);
         }
-        if (l === 0) {
-            list.push(['li', "No results."]);
-        }
         return ["ul"].concat(list);
     },
 

@@ -1,6 +1,6 @@
 var kizzy = require('kizzy');
 
-var cache = kizzy('request-cache');
+var cache = kizzy('data');
 
 module.exports = {
     set: function (key, value) {
