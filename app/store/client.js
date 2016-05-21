@@ -1,32 +1,30 @@
 var Promise = require('promise');
 
 module.exports = {
-    fetch: function (app, what, successCallback, errorCallback) {
+    fetch: function (app, what) {
         console.log(["fetching resources on the client", what]);
         var url = app.apiURL + what + '/';
         var cached = app.cache.get(what);
         
         if (cached) {
             console.log("We had something cached.");
-            cached.fromCache = true;
-            successCallback(cached);
             
             return new Promise(
-                function (res, err) {
-                    res(cached);
+                function (result, error) {
+                    result(cached);
                 });
         } else {
-            console.log("doing app.w.get");
-            
             function onOk (res) {
                 app.cache.set(what, res);
-                successCallback(res);
+                return res;
             }
             
             function onError (err) {
                 app.errorMessage(err.message + " - Maybe we're offline? Or there might be a problem with the server.");
-                errorCallback(err);
+                return err;
             }
+            
+            console.log("Nothing cached, fetching from the API server.");
             
             return app.w.get(url, [onOk, onError]);
         }

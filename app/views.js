@@ -34,8 +34,6 @@ function IsomorphicTestAppView(vm, deps) {
         
         var txt = server_rendered ? "Server" : "Client";
         
-        console.log(deps.app.errorMessage());
-        
         return ['div#domvm', {class: server_rendered ? '.server' : '.client'}, 
             ["div", txt],
             ["div", deps.app.errorMessage()],

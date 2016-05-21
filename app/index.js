@@ -30,13 +30,16 @@ var IsomorphicTestAppRoutes = {
             
             ctx.ready = new Promise(
                 function (result, error) {
-                    store.fetch(app, 'welcome-message', //).then(
+                    store.fetch(app, 'welcome-message').then(
                         function (res) {
                             console.log("Context ready!");
+                            console.log(res);
                             ctx.data(res);
+                            result();
                         },
                         function (err) {
                             console.log(err);
+                            error();
                         }
                     );
                 }
@@ -55,13 +58,15 @@ var IsomorphicTestAppRoutes = {
             
             ctx.ready = new Promise(
                 function (result, error) {
-                    store.fetch(app, 'contact-list',
+                    store.fetch(app, 'contact-list').then(
                         function (res) {
                             console.log("Context ready!");
                             ctx.data(res);
+                            result();
                         },
                         function (err) {
                             console.log(err);
+                            error();
                         }
                     );
                 }
