@@ -1,0 +1,99 @@
+[1mdiff --git a/app/index.js b/app/index.js[m
+[1mindex a96d0d5..969df59 100644[m
+[1m--- a/app/index.js[m
+[1m+++ b/app/index.js[m
+[36m@@ -45,6 +45,7 @@[m [mvar IsomorphicTestAppRoutes = {[m
+             [m
+             ctx.title = "Contact list";[m
+             ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);[m
+[32m+[m[32m            ctx.query = domvm.watch().prop('');[m[41m[m
+             [m
+             ctx.ready = store.fetch(app, 'contact-list').then([m
+                 function (res) {[m
+[1mdiff --git a/app/store/index.js b/app/store/index.js[m
+[1mindex 264ed22..a196eaa 100644[m
+[1m--- a/app/store/index.js[m
+[1m+++ b/app/store/index.js[m
+[36m@@ -20,15 +20,7 @@[m [mmodule.exports = {[m
+         [m
+         return Promise.resolve(resources[what]).then(onOk, onError);[m
+         [m
+[31m-        /*[m
+[31m-        return app.w.get(url, callbacks).then([m
+[31m-            function (res) {[m
+[31m-                console.log(res);[m
+[31m-            },[m
+[31m-            function (err) {[m
+[31m-                console.log(err);[m
+[31m-            }[m
+[31m-        );[m
+[31m-        */[m
+[32m+[m[32m        //var url = app.dataURL + what + '/';[m[41m[m
+[32m+[m[32m        //return app.w.get(url, [onOk, onError]);[m[41m[m
+     }[m
+ };[m
+\ No newline at end of file[m
+[1mdiff --git a/app/views.js b/app/views.js[m
+[1mindex a594bb0..82e658d 100644[m
+[1m--- a/app/views.js[m
+[1m+++ b/app/views.js[m
+[36m@@ -15,7 +15,7 @@[m [mfunction IsomorphicTestAppView(vm, deps) {[m
+                 break;[m
+             case 'contact_list':[m
+                 result = ["div", [m
+[31m-                    [w.ContactListWidget, {data: deps.app.context.data }],[m
+[32m+[m[32m                    [w.ContactListWidget, {data: deps.app.context.data, query: deps.app.context.query }],[m[41m[m
+                     ["br"], [m
+                     ["a", {href: deps.router.href("home", {})}, [m
+                     "Go home now"]];[m
+[1mdiff --git a/app/widgets.js b/app/widgets.js[m
+[1mindex e65c711..9093fe7 100644[m
+[1m--- a/app/widgets.js[m
+[1m+++ b/app/widgets.js[m
+[36m@@ -2,19 +2,17 @@[m [mvar t = require('./templates');[m
+ [m
+ module.exports = {[m
+     ContactListWidget: function (vm, deps) {[m
+[31m-        var query = '';[m
+[31m-        [m
+         function refreshContactList(e, node) {[m
+             if (node) {[m
+[31m-                query = node.el.value;[m
+[31m-                if (!query) query = '';[m
+[32m+[m[32m                deps.query(node.el.value);[m[41m[m
+[32m+[m[32m                if (!deps.query) deps.query();[m[41m[m
+                 vm.redraw();[m
+             }[m
+         }[m
+         [m
+         function matchesQuery(el) {[m
+             // startswith[m
+[31m-            return el.value.toLowerCase().lastIndexOf(query.toLowerCase(), 0) === 0;[m
+[32m+[m[32m            return el.value.toLowerCase().lastIndexOf(deps.query().toLowerCase(), 0) === 0;[m[41m[m
+         }[m
+         [m
+         function renderContact(el) {[m
+[36m@@ -23,7 +21,7 @@[m [mmodule.exports = {[m
+         [m
+         return function () {[m
+             return ['div.contact-list-widget',[m
+[31m-                ["form", t.renderInput({placeholder: "Type to search...", value: query, oninput: refreshContactList})],[m
+[32m+[m[32m                ["form", t.renderInput({placeholder: "Type to search...", value: deps.query ? deps.query() : '', oninput: refreshContactList})],[m[41m[m
+                 deps.data && deps.data()[m
+                     ? t.renderList(deps.data().filter(matchesQuery), renderContact) [m
+                     : ['ul', ['li', "Loading..."]][m
+[1mdiff --git a/server.js b/server.js[m
+[1mindex ee20834..0552686 100644[m
+[1m--- a/server.js[m
+[1m+++ b/server.js[m
+[36m@@ -23,7 +23,9 @@[m [mapp.use(compression());[m
+ app.get('/data/:what/', function (req, res) {[m
+     var what = req.params.what;[m
+     console.log(['serving data for', what]);[m
+[31m-    res.json(resources[what]);[m
+[32m+[m[32m    setTimeout(function () {[m
+[32m+[m[32m        res.json(resources[what]);[m
+[32m+[m[32m    }, 1000);[m
+ });[m
+ [m
+ app.get('/client.js', browserify('./client.js'));[m

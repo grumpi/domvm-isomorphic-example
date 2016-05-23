@@ -20,15 +20,7 @@ module.exports = {
         
         return Promise.resolve(resources[what]).then(onOk, onError);
         
-        /*
-        return app.w.get(url, callbacks).then(
-            function (res) {
-                console.log(res);
-            },
-            function (err) {
-                console.log(err);
-            }
-        );
-        */
+        //var url = app.dataURL + what + '/';
+        //return app.w.get(url, [onOk, onError]);
     }
 };

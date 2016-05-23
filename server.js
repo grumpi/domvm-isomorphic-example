@@ -23,7 +23,9 @@ app.use(compression());
 app.get('/data/:what/', function (req, res) {
     var what = req.params.what;
     console.log(['serving data for', what]);
-    res.json(resources[what]);
+    setTimeout(function () {
+        res.json(resources[what]);
+    }, 1000);
 });
 
 app.get('/client.js', browserify('./client.js'));

@@ -2,19 +2,17 @@ var t = require('./templates');
 
 module.exports = {
     ContactListWidget: function (vm, deps) {
-        var query = '';
-        
         function refreshContactList(e, node) {
             if (node) {
-                query = node.el.value;
-                if (!query) query = '';
+                deps.query(node.el.value);
+                if (!deps.query) deps.query();
                 vm.redraw();
             }
         }
         
         function matchesQuery(el) {
             // startswith
-            return el.value.toLowerCase().lastIndexOf(query.toLowerCase(), 0) === 0;
+            return el.value.toLowerCase().lastIndexOf(deps.query().toLowerCase(), 0) === 0;
         }
         
         function renderContact(el) {
@@ -23,7 +21,7 @@ module.exports = {
         
         return function () {
             return ['div.contact-list-widget',
-                ["form", t.renderInput({placeholder: "Type to search...", value: query, oninput: refreshContactList})],
+                ["form", t.renderInput({placeholder: "Type to search...", value: deps.query ? deps.query() : '', oninput: refreshContactList})],
                 deps.data && deps.data()
                     ? t.renderList(deps.data().filter(matchesQuery), renderContact) 
                     : ['ul', ['li', "Loading..."]]

@@ -45,6 +45,7 @@ var IsomorphicTestAppRoutes = {
             
             ctx.title = "Contact list";
             ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);
+            ctx.query = domvm.watch().prop('');
             
             ctx.ready = store.fetch(app, 'contact-list').then(
                 function (res) {

@@ -15,7 +15,7 @@ function IsomorphicTestAppView(vm, deps) {
                 break;
             case 'contact_list':
                 result = ["div", 
-                    [w.ContactListWidget, {data: deps.app.context.data }],
+                    [w.ContactListWidget, {data: deps.app.context.data, query: deps.app.context.query }],
                     ["br"], 
                     ["a", {href: deps.router.href("home", {})}, 
                     "Go home now"]];
