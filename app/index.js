@@ -63,7 +63,11 @@ function makeOnenter(router, app, context, route) {
         console.log("onenter runs for route '" + route + "'");
         app.errorMessage(null);
         app.context = context(router, app, segs);
-        app.context.ready && app.context.ready.then(
+        if (!app.context.ready) {
+            app.context.ready = Promise.resolve(app.context);
+        }
+        
+        app.context.ready.then(
             function (res) {
                 console.log(["Context ready!", res]);
             }

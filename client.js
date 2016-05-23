@@ -31,16 +31,10 @@ document.addEventListener("DOMContentLoaded", function() {
         
         router.refresh();
         
-        // restoring the scroll position when mounted
-        app.scrollPosition = [document.body.scrollLeft, document.body.scrollTop];
-        console.log(["scrollPosition", app.scrollPosition]);
-        
-        app.view.hook("didMount", function () {
-            scrollTo.apply(window, app.scrollPosition);
-            console.log(["scrollTo", app.scrollPosition]);
+        // to keep the scroll position when mounted, all I need to do is make sure I have all the data needed to render the page as close to the server-rendered version as possible, at least this seems to work on Chrome
+        app.context.ready.then(function () {
+            document.body.removeChild(document.body.firstChild);
+            app.view.mount(document.body); 
         });
-        
-        document.body.removeChild(document.body.firstChild);
-        app.view.mount(document.body);
     }, 2000);
 });

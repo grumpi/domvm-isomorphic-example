@@ -24,7 +24,7 @@ module.exports = {
         return function () {
             return ['div.contact-list-widget',
                 ["form", t.renderInput({placeholder: "Type to search...", value: query, oninput: refreshContactList})],
-                deps.data
+                deps.data && deps.data()
                     ? t.renderList(deps.data().filter(matchesQuery), renderContact) 
                     : ['ul', ['li', "Loading..."]]
                 ];
