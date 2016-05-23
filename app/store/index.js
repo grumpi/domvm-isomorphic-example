@@ -14,7 +14,7 @@ module.exports = {
         }
         
         function onError (err) {
-            app.errorMessage(err.message + " - Maybe we're offline? Or there might be a problem with the server.");
+            app.errorMessage(err.message + " Can't reach the API server.");
             return err;
         }
         
