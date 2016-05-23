@@ -14,9 +14,9 @@ function IsomorphicTestApp() {
 
     this.errorMessage = this.w.prop(null);
     
-    this.context = null;
+    this.context = {};
     
-    this.apiURL = 'http://127.0.0.1:8000/api/';
+    this.dataURL = 'http://127.0.0.1:8000/data/';
 }
 
 var IsomorphicTestAppRoutes = {
@@ -28,20 +28,10 @@ var IsomorphicTestAppRoutes = {
             
             ctx.data = app.w.prop('Loading...');
             
-            ctx.ready = new Promise(
-                function (result, error) {
-                    store.fetch(app, 'welcome-message').then(
-                        function (res) {
-                            console.log("Context ready!");
-                            console.log(res);
-                            ctx.data(res);
-                            result();
-                        },
-                        function (err) {
-                            console.log(err);
-                            error();
-                        }
-                    );
+            ctx.ready = store.fetch(app, 'welcome-message').then(
+                function (res) {
+                    ctx.data(res);
+                    return ctx;
                 }
             );
             
@@ -56,19 +46,10 @@ var IsomorphicTestAppRoutes = {
             ctx.title = "Contact list";
             ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);
             
-            ctx.ready = new Promise(
-                function (result, error) {
-                    store.fetch(app, 'contact-list').then(
-                        function (res) {
-                            console.log("Context ready!");
-                            ctx.data(res);
-                            result();
-                        },
-                        function (err) {
-                            console.log(err);
-                            error();
-                        }
-                    );
+            ctx.ready = store.fetch(app, 'contact-list').then(
+                function (res) {
+                    ctx.data(res);
+                    return ctx;
                 }
             );
             
@@ -82,6 +63,12 @@ function makeOnenter(router, app, context, route) {
         console.log("onenter runs for route '" + route + "'");
         app.errorMessage(null);
         app.context = context(router, app, segs);
+        app.context.ready && app.context.ready.then(
+            function (res) {
+                console.log(["Context ready!", res]);
+            }
+        );
+        
         document.title = app.context.title;
         app.view.redraw();
     }

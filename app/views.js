@@ -6,30 +6,24 @@ function IsomorphicTestAppView(vm, deps) {
         var route = deps.router.location();
         var result;
         
-        if (deps.app.context) {
-        
-            switch (route.name) {
-                case 'home':
-                    result = ["div", 
-                        ['div', deps.app.context.data()],
-                        ["a", {href: deps.router.href("contact_list", {})}, 
-                        "Contact List"]];
-                    break;
-                case 'contact_list':
-                    result = ["div", 
-                        [w.ContactListWidget, {data: deps.app.context.data }],
-                        ["br"], 
-                        ["a", {href: deps.router.href("home", {})}, 
-                        "Go home now"]];
-                    break;
-                default:
-                    result = ["span", "It looks like you are lost. Let's ", ["a", {href: deps.router.href("home", {})}, 
-                        "go home"], "."];
-                    break;
-            }
-        }
-        else {
-            result = ['span', 'The app is starting up...'];
+        switch (route.name) {
+            case 'home':
+                result = ["div", 
+                    ['div', deps.app.context.data ? deps.app.context.data() : "Loading..."],
+                    ["a", {href: deps.router.href("contact_list", {})}, 
+                    "Contact List"]];
+                break;
+            case 'contact_list':
+                result = ["div", 
+                    [w.ContactListWidget, {data: deps.app.context.data }],
+                    ["br"], 
+                    ["a", {href: deps.router.href("home", {})}, 
+                    "Go home now"]];
+                break;
+            default:
+                result = ["span", "It looks like you are lost. Let's ", ["a", {href: deps.router.href("home", {})}, 
+                    "go home"], "."];
+                break;
         }
         
         var txt = server_rendered ? "Server" : "Client";

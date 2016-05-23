@@ -3,7 +3,7 @@ var Promise = require('promise');
 module.exports = {
     fetch: function (app, what) {
         console.log(["fetching resources on the client", what]);
-        var url = app.apiURL + what + '/';
+        var url = app.dataURL + what + '/';
         var cached = app.cache.get(what);
         
         if (cached) {

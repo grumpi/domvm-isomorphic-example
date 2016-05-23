@@ -20,9 +20,9 @@ GLOBAL.HTMLElement = function () {};
 
 app.use(compression());
 
-app.get('/api/:what/', function (req, res) {
+app.get('/data/:what/', function (req, res) {
     var what = req.params.what;
-    console.log(['serving API', what]);
+    console.log(['serving data for', what]);
     res.json(resources[what]);
 });
 

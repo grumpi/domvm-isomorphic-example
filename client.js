@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
         app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
         
+        router.refresh();
         
         // restoring the scroll position when mounted
         app.scrollPosition = [document.body.scrollLeft, document.body.scrollTop];
@@ -39,11 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(["scrollTo", app.scrollPosition]);
         });
         
-        
         document.body.removeChild(document.body.firstChild);
         app.view.mount(document.body);
- 
-        router.refresh();
-        
     }, 2000);
 });
