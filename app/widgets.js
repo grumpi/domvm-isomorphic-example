@@ -5,7 +5,7 @@ module.exports = {
         function refreshContactList(e, node) {
             if (node) {
                 deps.query(node.el.value);
-                if (!deps.query) deps.query();
+                if (!deps.query) deps.query('');
                 vm.redraw();
             }
         }
