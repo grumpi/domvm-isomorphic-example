@@ -25,7 +25,6 @@ Requires the domvm repository in a sibling directory.
 
 ## TODOs
 
-* figure out why there's an error when using backspace to delete the query string from the contact list search box
 * figure out why the back button doesn't seem to work properly
 * find a good way to restructure things so that anything pertaining to a single route can live closely together? There are some things that should live only on the server: fetching data for the route's context from the API.
 
