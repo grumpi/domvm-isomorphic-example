@@ -25,7 +25,8 @@ Requires the domvm repository in a sibling directory.
 
 ## TODOs
 
-* figure out why the back button doesn't seem to work properly
+* add example login functionality
+* test for a compatible user agent on the server - depending on that serve the js or not. Maybe allow the user to enable javascript on a non-supported user agent by setting a cookie?
 * find a good way to restructure things so that anything pertaining to a single route can live closely together? There are some things that should live only on the server: fetching data for the route's context from the API.
 
 
