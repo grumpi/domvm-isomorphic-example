@@ -1,5 +1,5 @@
 var v = require('./views');
-var store = require('./store');
+var loadContext = require('./context');
 var Promise = require('promise');
 
 function IsomorphicTestApp() {
@@ -12,11 +12,9 @@ function IsomorphicTestApp() {
         }
 	});
 
-    this.errorMessage = this.w.prop(null);
+    this.errorMessage = null;
     
     this.context = {};
-    
-    this.dataURL = 'http://127.0.0.1:8000/data/';
 }
 
 var IsomorphicTestAppRoutes = {
@@ -24,11 +22,11 @@ var IsomorphicTestAppRoutes = {
         path: '/',
         context: function (router, app, segs) {
             var ctx = {};
-            ctx.title = "home";
+            ctx.title = "Home";
             
             ctx.data = app.w.prop('Loading...');
             
-            ctx.ready = store.fetch(app, 'welcome-message').then(
+            ctx.ready = loadContext(app, 'home',
                 function (res) {
                     ctx.data(res);
                     return ctx;
@@ -47,9 +45,13 @@ var IsomorphicTestAppRoutes = {
             ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);
             ctx.query = domvm.watch().prop('');
             
-            ctx.ready = store.fetch(app, 'contact-list').then(
+            ctx.ready = loadContext(app, 'contact-list',
                 function (res) {
                     ctx.data(res);
+                    return ctx;
+                },
+                function (err) {
+                    ctx.data([{id: -1, value: "Error fetching data!"}]);
                     return ctx;
                 }
             );
@@ -62,7 +64,7 @@ var IsomorphicTestAppRoutes = {
 function makeOnenter(router, app, context, route) {
     function wrappedOnenter(segs) {
         console.log("onenter runs for route '" + route + "'");
-        app.errorMessage(null);
+        app.errorMessage = null;
         app.context = context(router, app, segs);
         if (!app.context.ready) {
             app.context.ready = Promise.resolve(app.context);

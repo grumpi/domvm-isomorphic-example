@@ -3,7 +3,7 @@ var app = express();
 var domvm = require('./../domvm');
 var browserify = require('browserify-middleware');
 var example_app = require('./app');
-var resources = require('./resources');
+var contexts = require('./app/context/contexts');
 var compression = require('compression');
 var html_escape = require('html-escape');
 
@@ -24,7 +24,9 @@ app.get('/data/:what/', function (req, res) {
     var what = req.params.what;
     console.log(['serving data for', what]);
     setTimeout(function () {
-        res.json(resources[what]);
+        contexts[what]().then(function (result) {
+            res.json(result);
+        });
     }, 1000);
 });
 

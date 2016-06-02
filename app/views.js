@@ -30,7 +30,7 @@ function IsomorphicTestAppView(vm, deps) {
         
         return ['div#domvm', {class: server_rendered ? '.server' : '.client'}, 
             ["div", txt],
-            ["div", deps.app.errorMessage()],
+            ["div", deps.app.errorMessage],
             ['br'], ['br'],
             result];
     };

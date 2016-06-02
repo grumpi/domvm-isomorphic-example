@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
     setTimeout(function () {
         app = new example_app.IsomorphicTestApp();
+        app.dataURL = 'http://127.0.0.1:8000/data/';
         
         app.cache = cache;
         Object.keys(initData).map(function (k) {
@@ -35,6 +36,10 @@ document.addEventListener("DOMContentLoaded", function() {
         app.context.ready.then(function () {
             document.body.removeChild(document.body.firstChild);
             app.view.mount(document.body); 
+        });
+        
+        app.view.hook('didRedraw', function (x) {
+            console.log(['domvm did a redraw', x]);
         });
     }, 2000);
 });
