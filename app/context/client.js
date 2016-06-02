@@ -2,7 +2,7 @@ var Promise = require('promise');
 
 function loadContext (app, what, okCallback, errorCallback) {
     console.log(["fetching context on the client", what]);
-    var url = app.dataURL + what + '/';
+    var url = app.viewContextURL + what + '/';
     var cached = app.cache.get(what);
     
     if (cached) {
