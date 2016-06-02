@@ -24,9 +24,15 @@ app.get('/data/:what/', function (req, res) {
     var what = req.params.what;
     console.log(['serving data for', what]);
     setTimeout(function () {
-        contexts[what]().then(function (result) {
-            res.json(result);
-        });
+        contexts[what]().then(
+            function (result) {
+                res.json(result);
+            },
+            function (error) {
+                res.status(500);
+                res.json(error);
+            }
+        );
     }, 1000);
 });
 

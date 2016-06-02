@@ -31,6 +31,11 @@ var IsomorphicTestAppRoutes = {
                     ctx.data(res);
                     return ctx;
                 }
+            ).catch(
+                function (err) {
+                    ctx.data('Message could not be loaded from the server.');
+                    return ctx;
+                }
             );
             
             return ctx;
@@ -49,7 +54,8 @@ var IsomorphicTestAppRoutes = {
                 function (res) {
                     ctx.data(res);
                     return ctx;
-                },
+                }
+            ).catch(
                 function (err) {
                     ctx.data([{id: -1, value: "Error fetching data!"}]);
                     return ctx;

@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // to keep the scroll position when mounted, all I need to do is make sure I have all the data needed to render the page as close to the server-rendered version as possible, at least this seems to work on Chrome
         app.context.ready.then(function () {
+            console.log("Mounting the client now");
             document.body.removeChild(document.body.firstChild);
             app.view.mount(document.body); 
         });

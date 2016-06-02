@@ -6,7 +6,10 @@ module.exports = {
         return Promise.resolve(resources['welcome-message']);
     },
     'contact-list': function () {
-        return Promise.resolve(resources['contact-list']);
-        //return Promise.reject(new Error("ERROR"));
+        if(Math.random() > 0.5) {
+            return Promise.resolve(resources['contact-list']);
+        } else {
+            return Promise.reject(new Error("ERROR"));
+        }
     },
 };
