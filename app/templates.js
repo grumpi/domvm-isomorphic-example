@@ -8,7 +8,8 @@ module.exports = {
         for (var i=0; i<l; i++) {
             list.push(['li', f(data[i])]);
         }
-        return ["ul"].concat(list);
+
+        return ["ul", list];
     },
 
     renderInput: function (opts) {
