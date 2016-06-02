@@ -9,13 +9,15 @@ module.exports = function (app, what, okCallback, errorCallback) {
 
     function onOk (res) {
         app.data_to_inline[what] = res;
+        okCallback(res);
         return res;
     }
     
     function onError (err) {
         app.errorMessage = err.message + " - There was a problem creating the context on the server.";
+        errorCallback(err);
         return err;
     }
     
-    return contexts[what]().then(onOk, onError).then(okCallback, errorCallback);
+    return contexts[what]().then(onOk, onError);
 };
