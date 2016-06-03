@@ -26,12 +26,8 @@ var IsomorphicTestAppRoutes = {
             
             ctx.data = app.w.prop('Loading...');
             
-            ctx.ready = loadContext(app, 'home',
-                function (res) {
-                    ctx.data(res);
-                    return ctx;
-                }
-            ).catch(
+            ctx.ready = loadContext(app, 'home', ctx.data)
+            .catch(
                 function (err) {
                     ctx.data('Message could not be loaded from the server.');
                     return ctx;
@@ -50,12 +46,8 @@ var IsomorphicTestAppRoutes = {
             ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);
             ctx.query = domvm.watch().prop('');
             
-            ctx.ready = loadContext(app, 'contact-list',
-                function (res) {
-                    ctx.data(res);
-                    return ctx;
-                }
-            ).catch(
+            ctx.ready = loadContext(app, 'contact-list', ctx.data)
+            .catch(
                 function (err) {
                     ctx.data([{id: -1, value: "Error fetching data!"}]);
                     return ctx;
