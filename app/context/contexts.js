@@ -12,7 +12,7 @@ module.exports = {
             return Promise.resolve(resources['contact-list']);
         } else {
             console.log("Let's pretend that there was an error fetching from the mock API.")
-            return Promise.reject(new Error("The API was too busy"));
+            return Promise.reject(new Error("The API was too busy (this is a fake error that happens so we can mock dealing with errors)"));
         }
     },
 };
