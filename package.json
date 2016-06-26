@@ -4,8 +4,7 @@
   "description": "basic example of rendering html on the server with domvm",
   "main": "server.js",
   "browser": {
-    "./app/context/index.js": "./app/context/client.js",
-    "./app/server-or-client/index.js": "./app/server-or-client/client.js"
+    "./app/context/index.js": "./app/context/client.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -39,8 +39,14 @@ app.get('/data/:what/', function (req, res) {
         }).then(
             function (result) {
                 res.status(200);
-                res.json(result);
-                console.log(['SPA server: sent!', result]);
+                
+                if(Math.random() > 0.2) {
+                    res.json(result);
+                    console.log(['SPA server: sent!', result]);
+                } else {
+                    res.json(42);
+                    console.log(['SPA server: sent 42 instead of real data to see how the client handles it']);
+                }
             },
             function (error) {
                 error.data.json().then(function (body) {
@@ -69,19 +75,43 @@ app.get('/*', function (req, res) {
     console.log(['cookie/csrf', req.cookies['domvm-isomorphic-example-login-cookie'], req.get('X-Requested-With')]);
     
     function render(app, res) {
-        app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
-    
-        var result = '<!doctype html><html>'
-        + '<head>'
-        + '<title>'+ app.context.title +'</title>'
-        + '</head>'
-        + '<body>' 
-        + domvm.html(app.view.node) 
-        + '<script id="resources" type="application/json">' + html_escape(JSON.stringify(app.data_to_inline)) + "</script>"
-        + '<script src="/client.js"></script>'
-        + '</body>'
-        + '</html>';
-        res.send(result);
+        console.log("Trying to render HTML!");
+        try {
+            app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
+        
+            var result = '<!doctype html><html>'
+            + '<head>'
+            + '<title>'+ app.context.title +'</title>'
+            + '</head>'
+            + '<body>' 
+            + domvm.html(app.view.node) 
+            + '<script id="resources" type="application/json">' + html_escape(JSON.stringify(app.data_to_inline)) + "</script>"
+            + '<script src="/client.js"></script>'
+            + '</body>'
+            + '</html>';
+            
+            console.log('HTML sent!');
+            
+            res.send(result);
+        } catch (e) {
+            var result = '<!doctype html><html>'
+            + '<head>'
+            + '<title>Here be Dragons</title>'
+            + '</head>'
+            + '<body>' 
+            + '<div>'
+            + '<h1>Something went horribly wrong! The server was unable to render the page.</h1>'
+            + e.message
+            + '</div>'
+            + '<script id="resources" type="application/json">' + html_escape(JSON.stringify(app.data_to_inline)) + "</script>"
+            + '<script src="/client.js"></script>'
+            + '</body>'
+            + '</html>';
+            
+            console.log("There was an error rendering!");
+            
+            res.status(500).send(result);
+        }
     }
     
   location.href = req.path;

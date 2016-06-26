@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function() {
         Object.keys(initData).map(function (k) {
             app.cache.set(k, initData[k]);
         });
-        
     
         var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
         app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
@@ -46,5 +45,19 @@ document.addEventListener("DOMContentLoaded", function() {
         app.view.hook('didRedraw', function (x) {
             console.log(['domvm did a redraw', x]);
         });
+        
+        window.criticalError = false;
+        
+        window.onerror = function(message, url, lineNumber) {
+            if (!window.criticalError) {
+                app.globalErrorMessage = "A critical error just happened. It's not your fault. I'm sorry it happened. If other things are broken now, it's very likely due to this error. Sometimes, other parts of the app work fine. Sometimes not. Work on fixing the problem is likely already in progress.";
+                app.view.redraw();
+                window.criticalError = true;
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
     }, 2000);
 });

@@ -11,6 +11,8 @@ function IsomorphicTestApp() {
         }
 	});
     
+    this.globalErrorMessage = null;
+    
     this.context = {};
    
     this.auth = {
