@@ -15,5 +15,5 @@ module.exports = function (app, what, okCallback, errorCallback) {
         return err;
     }
     
-    return contexts[what]().then(onOk, onError);
+    return contexts[what](app.serverAuth).then(onOk, onError);
 };

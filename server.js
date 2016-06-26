@@ -108,7 +108,7 @@ app.get('/api/resources/:what/', function (req, res) {
 
 
 
-// SPA server
+// SPA server prerendering HTML
 app.get('/*', function (req, res) {
     console.log(['serving', req.path]);
     
@@ -131,6 +131,10 @@ app.get('/*', function (req, res) {
   location.href = req.path;
   
   var app = new example_app.IsomorphicTestApp();
+  app.serverAuth = {
+    cookies: req.get('Cookie'),
+    csrf: req.get('X-Requested-With'),
+  };
   app.data_to_inline = {};
   
   app.ready = function () {
