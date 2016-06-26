@@ -94,10 +94,6 @@ app.get('/*', function (req, res) {
   };
   app.data_to_inline = {};
   
-  app.ready = function () {
-      render(app, res);
-  }
-  
   var router = domvm.route(example_app.IsomorphicTestAppRouter, app);
   
   if (router.location().name) {
@@ -107,10 +103,10 @@ app.get('/*', function (req, res) {
             render(app, res); 
         });
     } else {
-        render(app, res);    
+        render(app, res); 
     }
   } else {
-    render(app, res);
+    render(app, res); 
   }
 });
 

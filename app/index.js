@@ -12,7 +12,7 @@ function IsomorphicTestApp() {
 	});
     
     this.context = {};
-    
+   
     this.auth = {
         user: self.w.prop(null),
         loginErrorMessage: self.w.prop(null),
@@ -33,6 +33,15 @@ function IsomorphicTestApp() {
                 console.log(self.cache);
                 self.cache.clear();
                 return res;
+            }]);
+        },
+        
+        whoAmIFunction: function () {
+            console.log('whoAmIFunction');
+            
+            return self.w.get(self.whoAmIURL, [function (res) {
+                console.log(['I am', res]);
+                self.auth.user(res);
             }]);
         },
     };

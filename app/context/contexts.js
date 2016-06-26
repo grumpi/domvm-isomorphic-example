@@ -13,14 +13,12 @@ function apiFetch(what, auth) {
             // https://github.com/leeoniya/domvm/blob/1.x-dev/src/watch.js#L41-L49
             // purpose: make this behave as close to the domvm implementation as possible
             if (resp.status >= 200 && resp.status < 300) {
-                return resp;
+                return resp.json();
             } else {
                 var err = new Error(resp.status + ": " + resp.statusText)
                 err.data = resp;
                 return Promise.reject(err);
             }
-        }).then(function (resp) {
-            return resp.json();
         });
 }
 

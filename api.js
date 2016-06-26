@@ -1,5 +1,7 @@
 var resources = require('./resources');
 
+var userData = {username: 'test', id: 4, csrf: 'csrf-token-value'};
+
 module.exports = function (app, prefix) {
     app.post(prefix+'/login/', function (req, res) {
         console.log(['API server: Log in', req.body]);
@@ -7,7 +9,7 @@ module.exports = function (app, prefix) {
         setTimeout(function () {
             if (req.body.password === 'test' && req.body.username === 'test') {
                 res.cookie('domvm-isomorphic-example-login-cookie', 'example-session-value', { maxAge: 900000, httpOnly: true });
-                res.json({username: 'test', id: 4, csrf: 'csrf-token-value'});
+                res.json(userData);
             } else {
                 res.status(404);
                 res.json({error: "Login failed. Try logging in with username 'test' and password 'test'."});
@@ -22,6 +24,14 @@ module.exports = function (app, prefix) {
             res.clearCookie('domvm-isomorphic-example-login-cookie');
             res.send('You were logged out');
         }, 2000);
+    });
+    
+    app.get(prefix+'/who-am-i/', function (req, res) {
+        if (req.cookies['domvm-isomorphic-example-login-cookie'] === 'example-session-value') {
+            res.json(userData);
+        } else {
+            res.json(null);
+        }
     });
 
     app.get(prefix+'/resources/:what/', function (req, res) {

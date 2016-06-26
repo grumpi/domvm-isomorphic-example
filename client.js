@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
         app.viewContextURL = 'http://127.0.0.1:8000/data/';
         app.loginURL = 'http://127.0.0.1:8000/api/login/';
         app.logoutURL = 'http://127.0.0.1:8000/api/logout/';
+        app.whoAmIURL = 'http://127.0.0.1:8000/api/who-am-i/';
         
         app.cache = cache;
         Object.keys(initData).map(function (k) {
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Mounting the client now");
             document.body.removeChild(document.body.firstChild);
             app.view.mount(document.body); 
+            app.auth.whoAmIFunction();
         });
         
         app.view.hook('didRedraw', function (x) {
