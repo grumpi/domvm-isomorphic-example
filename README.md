@@ -38,7 +38,6 @@ Frontend:
 ## TODOs
 
 * remember who is logged in through page reloads
-* clear all data associated with the application on logout
 * test for a compatible user agent on the server - depending on that serve the js or not. Maybe allow the user to enable javascript on a non-supported user agent by setting a cookie?
 * find a good way to restructure things so that anything pertaining to a single route can live closely together?
 

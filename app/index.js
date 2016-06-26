@@ -29,7 +29,13 @@ function IsomorphicTestApp() {
         
         logoutFunction: function () {
             console.log('logoutFunction');
-            return self.w.post(self.logoutURL);
+            
+            return self.w.post(self.logoutURL, null, [function (res) {
+                console.log('clearing cache');
+                console.log(self.cache);
+                self.cache.clear();
+                return res;
+            }]);
         },
     };
 }

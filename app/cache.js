@@ -15,5 +15,8 @@ module.exports = {
         var cached = cache.get(key);
         console.log(['get cache', key, cached]);
         return cached;
+    },
+    clear: function () {
+        cache.clear();
     }
 }

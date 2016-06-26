@@ -79,7 +79,6 @@ module.exports = {
                     deps.auth.user(null);
                 }
             );
-            // TODO: delete cached data, etc.
         }
         
         return function () {
