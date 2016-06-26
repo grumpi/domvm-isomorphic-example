@@ -13,22 +13,22 @@ Requires the domvm repository in a sibling directory.
 
 `nodejs server.js`
 
+Runs on port 8000.
+
 ## Status
 
 * Server-side routing works with a somewhat hacky workaround of adding variables to the GLOBAL object of Nodejs. TODO: This is not necessarily thread-safe. As soon as something async happens between setting and using these global variables, they might get overwritten.
 * When the client starts to run, the server-rendered DOM is wiped and the client renders anew.
-* `store/` provides an interface for fetching from the data API from either client or server.
-* the nodejs server in this example serves both the data API and the SPA. In a realistic situation, it's likely that the data API is served by a separate server. For that, we can send requests to the data API server in `store/index.js` instead of reading data from the resource-variable.
-* the nodejs server collects data needed for the context of the route that is served and includes that in the rendered HTML.
-* the SPA client caches what it got from the `store/` for a few seconds.
-* the SPA client initializes its cache with the inlined data included in the server-rendered HTML.
+* the nodejs server in this example serves both the data API (under `/api`) and the single page application.
+* every route has a context that is fetched from the SPA server. The SPA server performs http requests to the API to assemble the context.
+* when rendering a page on the server, the nodejs server includes the route's context in the HTML page it sends.
+* the SPA client caches contexts for a few seconds.
+* the SPA client initializes its context cache with the inlined data included in the server-rendered HTML.
 
 ## TODOs
 
-* add example login functionality
 * test for a compatible user agent on the server - depending on that serve the js or not. Maybe allow the user to enable javascript on a non-supported user agent by setting a cookie?
-* find a good way to restructure things so that anything pertaining to a single route can live closely together? There are some things that should live only on the server: fetching data for the route's context from the API.
-
+* find a good way to restructure things so that anything pertaining to a single route can live closely together?
 
 ### Rehydration of the Server-Rendered DOM?
 
