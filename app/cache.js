@@ -1,3 +1,4 @@
+// part of the SPA client, only runs in the user's browser
 var kizzy = require('kizzy');
 
 var cache = kizzy('data');

@@ -1,5 +1,5 @@
 function loadContext (app, what, okCallback, errorCallback) {
-    console.log(["fetching context on the client", what]);
+    console.log("fetching context for route '"+what+"'.");
     var url = app.viewContextURL + what + '/';
     var cached = app.cache.get(what);
     
@@ -15,8 +15,6 @@ function loadContext (app, what, okCallback, errorCallback) {
         }
         
         function onError (err) {
-            console.log(['err', err]);
-            
             if (err.data) {
                 return err.data.json().then(function (body) {
                     app.errorMessage = err.message + " (" + JSON.stringify(body) + ")";

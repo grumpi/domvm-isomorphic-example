@@ -2,7 +2,7 @@ var resources = require('./resources');
 
 module.exports = function (app, prefix) {
     app.post(prefix+'/login/', function (req, res) {
-        console.log(['Someone tries to log in', req.body]);
+        console.log(['API server: Log in', req.body]);
         
         setTimeout(function () {
             if (req.body.password === 'test' && req.body.username === 'test') {
@@ -16,7 +16,7 @@ module.exports = function (app, prefix) {
     });
 
     app.post(prefix+'/logout/', function (req, res) {
-        console.log(['Someone tries to log out', req.cookies]);
+        console.log(['API server: Log out', req.cookies]);
         
         setTimeout(function () {
             res.clearCookie('domvm-isomorphic-example-login-cookie');
@@ -26,18 +26,18 @@ module.exports = function (app, prefix) {
 
     app.get(prefix+'/resources/:what/', function (req, res) {
         var what = req.params.what;
-        console.log(['API serving ', what]);
+        console.log("API server begins to serve resource '" + what + "'");
         
-        console.log(['cookie', req.cookies['domvm-isomorphic-example-login-cookie']]);
+        console.log(['cookie/csrf', req.cookies['domvm-isomorphic-example-login-cookie'], req.get('X-Requested-With')]);
         
         if (req.cookies['domvm-isomorphic-example-login-cookie'] !== 'example-session-value') {
             var err = {error: 'No permission to access '+what};
             res.status(403);
             res.json(err);
-            console.log(["API: error!", err]);
+            console.log(["API server: error!", err]);
         } else {
             res.json(resources[what]);
-            console.log(['API: sent!', resources[what]]);
+            console.log(['API server: sent!', resources[what]]);
         }
     });
 };

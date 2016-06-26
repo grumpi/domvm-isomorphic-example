@@ -28,7 +28,7 @@ app.use(compression());
 
 app.get('/data/:what/', function (req, res) {
     var what = req.params.what;
-    console.log(['serving data for', what]);
+    console.log("SPA server begins to serve context data for route '"+what+"'");
     
     console.log(['cookie/csrf', req.cookies['domvm-isomorphic-example-login-cookie'], req.get('X-Requested-With')]);
     
@@ -38,14 +38,13 @@ app.get('/data/:what/', function (req, res) {
             csrf: req.get('X-Requested-With'),
         }).then(
             function (result) {
-                console.log(result);
                 res.status(200);
                 res.json(result);
-                console.log('SPA: SENT!');
+                console.log(['SPA server: sent!', result]);
             },
             function (error) {
                 error.data.json().then(function (body) {
-                    console.log(['SPA: ERROR!', error, error.data.status, body]);
+                    console.log(['SPA server: error!', error, body]);
                     res.status(error.data.status);
                     res.json(body);
                 });
@@ -66,7 +65,8 @@ addApiRoutes(app, '/api');
 
 // SPA server prerendering HTML
 app.get('/*', function (req, res) {
-    console.log(['serving', req.path]);
+    console.log("SPA server begins to serve HTML for path '" + req.path + "'");
+    console.log(['cookie/csrf', req.cookies['domvm-isomorphic-example-login-cookie'], req.get('X-Requested-With')]);
     
     function render(app, res) {
         app.view = domvm.view(example_app.IsomorphicTestAppView, {app: app, router: router});
@@ -87,6 +87,7 @@ app.get('/*', function (req, res) {
   location.href = req.path;
   
   var app = new example_app.IsomorphicTestApp();
+  app.viewContextURL = 'http://127.0.0.1:8000/data/';
   app.serverAuth = {
     cookies: req.get('Cookie'),
     csrf: req.get('X-Requested-With'),

@@ -49,7 +49,7 @@ What I noticed: as soon as I'm naively doing data-binding for input elements (li
 
 I haven't figured out a good way to get the value from the input in the server-rendered DOM to a variable in the app. My impression is that, sure, this is possible to do, but then we're starting to go down a slope of doing more or less clever hacks.
 
-Practical consideration: When you render on the server, I think it's not uncommon that you want to render things differently on the server than on the client - and if it's just to let the user know that the page was rendered on the server and there's more stuff loading. This means that your server-rendered DOM differs from the client-rendered DOM. This can result in domvm being unable to attach to the existing DOM.
+Practical consideration: I think it's not uncommon that you want to render things differently on the server than on the client - and if it's just to let the user know that the page was rendered on the server and there's more stuff loading. This means that your server-rendered DOM differs from the client-rendered DOM. This can result in domvm being unable to attach to the existing DOM.
 
 That's what got me to the point where I thought "oh well, in my case it's really just fine if people cannot interact until the Single-Page-Application is loaded". In this use case, it makes sense to render differently between server and client, in such a way that the user already sees the input elements that will become active when the Single-Page-Application is up and running.
 
