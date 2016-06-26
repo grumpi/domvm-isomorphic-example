@@ -10,8 +10,6 @@ function IsomorphicTestApp() {
             self.view.redraw();
         }
 	});
-
-    this.errorMessage = null;
     
     this.context = {};
     
@@ -49,7 +47,7 @@ var IsomorphicTestAppRoutes = {
             
             ctx.data = app.w.prop('Loading...');
             
-            ctx.ready = loadContext(app, 'home', ctx.data)
+            ctx.ready = loadContext(app, ctx, 'home', ctx.data)
             .catch(
                 function (err) {
                     ctx.data('Message could not be loaded from the server.');
@@ -69,7 +67,7 @@ var IsomorphicTestAppRoutes = {
             ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);
             ctx.query = domvm.watch().prop('');
             
-            ctx.ready = loadContext(app, 'contact-list', ctx.data)
+            ctx.ready = loadContext(app, ctx, 'contact-list', ctx.data)
             .catch(
                 function (err) {
                     ctx.data([{id: -1, value: "Error fetching data!"}]);
@@ -96,8 +94,8 @@ var IsomorphicTestAppRoutes = {
 function makeOnenter(router, app, context, route) {
     function wrappedOnenter(segs) {
         console.log("onenter runs for route '" + route + "'");
-        app.errorMessage = null;
         app.context = context(router, app, segs);
+        app.context.errorMessage = null;
         if (!app.context.ready) {
             app.context.ready = Promise.resolve(app.context);
         }

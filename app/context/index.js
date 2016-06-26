@@ -1,7 +1,7 @@
 // runs on the SPA server only, for rendering HTML pages
 var contexts = require('./contexts');
 
-module.exports = function (app, what, okCallback, errorCallback) {
+module.exports = function (app, context, what, okCallback, errorCallback) {
     console.log("the SPA running on the server tries to fetch the context for route '"+what+"'.");
     var url = app.viewContextURL + what + '/';
     
@@ -14,11 +14,11 @@ module.exports = function (app, what, okCallback, errorCallback) {
     function onError (err) {
         if (err.data) {
             return err.data.json().then(function (body) {
-                app.errorMessage = err.message + " (" + JSON.stringify(body) + ")";
+                context.errorMessage = err.message + " (" + JSON.stringify(body) + ")";
                 errorCallback(err);
             });
         } else {
-            app.errorMessage = err.message + " - It looks like the context server isn't reachable.";
+            context.errorMessage = err.message + " - It looks like the context server isn't reachable.";
             errorCallback(err);
         }
     }

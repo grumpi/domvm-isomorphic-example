@@ -44,7 +44,7 @@ function IsomorphicTestAppView(vm, deps) {
         return ['div#domvm', {class: server_rendered ? '.server' : '.client'}, 
             ["div", txt],
             deps.app.auth.user() ? ["div", "You are logged in as " + JSON.stringify(deps.app.auth.user())] : null,
-            ["div", deps.app.errorMessage],
+            ["div", deps.app.context.errorMessage],
             ['br'], ['br'],
             result];
     };

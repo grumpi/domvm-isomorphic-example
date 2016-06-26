@@ -1,4 +1,4 @@
-function loadContext (app, what, okCallback, errorCallback) {
+function loadContext (app, context, what, okCallback, errorCallback) {
     console.log("fetching context for route '"+what+"'.");
     var url = app.viewContextURL + what + '/';
     var cached = app.cache.get(what);
@@ -17,11 +17,11 @@ function loadContext (app, what, okCallback, errorCallback) {
         function onError (err) {
             if (err.data) {
                 return err.data.json().then(function (body) {
-                    app.errorMessage = err.message + " (" + JSON.stringify(body) + ")";
+                    context.errorMessage = err.message + " (" + JSON.stringify(body) + ")";
                     errorCallback(err);
                 });
             } else {
-                app.errorMessage = err.message + " - It looks like I'm offline or the server currently isn't reachable for some other reason.";
+                context.errorMessage = err.message + " - It looks like I'm offline or the server currently isn't reachable for some other reason.";
                 errorCallback(err);
             }
         }
