@@ -15,11 +15,21 @@ Requires the domvm repository in a sibling directory.
 
 Runs on port 8000.
 
+## Architecture
+
+Backend:
+* API server: handles authentication/authorization and all logic pertaining to persistent data (assumed to be running under TLS).
+* SPA server: serves the single page application client, serves contexts for the routes of the single page application, prerenders HTML on the server (assumed to be running under TLS, performs http requests to the API server)
+
+Frontend:
+* SPA client: runs in the user's browser (performs AJAX requests to SPA server and API server).
+
 ## Status
 
 * Server-side routing works with a somewhat hacky workaround of adding variables to the GLOBAL object of Nodejs. TODO: This is not necessarily thread-safe. As soon as something async happens between setting and using these global variables, they might get overwritten.
 * When the client starts to run, the server-rendered DOM is wiped and the client renders anew.
 * the nodejs server in this example serves both the data API (under `/api`) and the single page application.
+* the API uses cookie-based authentication/authorization.
 * every route has a context that is fetched from the SPA server. The SPA server performs http requests to the API to assemble the context.
 * when rendering a page on the server, the nodejs server includes the route's context in the HTML page it sends.
 * the SPA client caches contexts for a few seconds.
@@ -27,6 +37,7 @@ Runs on port 8000.
 
 ## TODOs
 
+* clear all data associated with the application on logout
 * test for a compatible user agent on the server - depending on that serve the js or not. Maybe allow the user to enable javascript on a non-supported user agent by setting a cookie?
 * find a good way to restructure things so that anything pertaining to a single route can live closely together?
 
