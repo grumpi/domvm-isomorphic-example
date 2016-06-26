@@ -29,15 +29,7 @@ function loadContext (app, what, okCallback, errorCallback) {
         }
         
         console.log("Nothing cached, fetching context from the SPA server.");
- 
-        var opts = {};
-        opts.headers = new Headers();
-        if (app.auth.user()) {
-            opts.headers.set("X-Requested-With", app.auth.user().csrf || 'Nope');
-            console.log(opts.headers.get('X-Requested-With'));
-        }
- 
-        return app.w.fetch('GET', url, null, [onOk, onError], opts);
+        return app.w.get(url, [onOk, onError]);
     }
 }
 

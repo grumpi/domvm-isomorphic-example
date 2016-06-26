@@ -23,7 +23,7 @@ GLOBAL.HTMLElement = function () {};
 // SPA server
 var app = express();
 app.use(cookieParser());
-app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.json());
 app.use(compression());
 
 app.get('/data/:what/', function (req, res) {
@@ -93,9 +93,9 @@ app.get('/api/resources/:what/', function (req, res) {
     var what = req.params.what;
     console.log(['API serving ', what]);
     
-    console.log(['cookie/csrf', req.cookies['domvm-isomorphic-example-login-cookie'], req.get('X-Requested-With')]);
+    console.log(['cookie', req.cookies['domvm-isomorphic-example-login-cookie']]);
     
-    if (req.cookies['domvm-isomorphic-example-login-cookie'] !== 'example-session-value') { // || req.get('X-Requested-With') !== 'csrf-token-value') {
+    if (req.cookies['domvm-isomorphic-example-login-cookie'] !== 'example-session-value') {
         var err = {error: 'No permission to access '+what};
         res.status(403);
         res.json(err);
