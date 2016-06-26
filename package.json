@@ -15,10 +15,12 @@
   "dependencies": {
     "express": "~4.13.4",
     "browserify-middleware": "~7.0.0",
-    "node-fetch": "~1.5.2",
-    "promise": "~7.1.1",
     "compression": "~1.6.1",
     "html-escape": "~2.0.0",
-    "kizzy": "0.0.5"
+    "kizzy": "0.0.5",
+    "body-parser": "~1.15.1",
+    "cookie-parser": "~1.4.3",
+    "isomorphic-fetch": "~2.2.1",
+    "es6-promise": "~3.2.1"
   }
 }

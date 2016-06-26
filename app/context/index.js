@@ -1,8 +1,4 @@
 var contexts = require('./contexts');
-var Promise = require('promise');
-//var f = require('node-fetch');
-//f.Promise = Promise;
-//GLOBAL.fetch = f;
 
 module.exports = function (app, what, okCallback, errorCallback) {
     console.log(["fetching context on the server", what]);

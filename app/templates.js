@@ -14,7 +14,7 @@ module.exports = {
 
     renderInput: function (opts) {
         return server_rendered 
-            ? ["input", {disabled: true, value: "We're still loading!"}]
+            ? ["input", {disabled: true, value: "Loading..."}]
             : ["input", opts];
     },
 };

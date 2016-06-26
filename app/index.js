@@ -1,6 +1,5 @@
 var v = require('./views');
 var loadContext = require('./context');
-var Promise = require('promise');
 
 function IsomorphicTestApp() {
     var self = this;
@@ -15,6 +14,24 @@ function IsomorphicTestApp() {
     this.errorMessage = null;
     
     this.context = {};
+    
+    this.auth = {
+        user: self.w.prop(null),
+        loginErrorMessage: self.w.prop(null),
+        
+        username: domvm.watch().prop('test'),
+        password: domvm.watch().prop(''),
+        
+        loginFunction: function (username, password) {
+            console.log(['loginFunction', username, password]);
+            return self.w.post(self.loginURL, {username: username, password: password});
+        },
+        
+        logoutFunction: function () {
+            console.log('logoutFunction');
+            return self.w.post(self.logoutURL);
+        },
+    };
 }
 
 var IsomorphicTestAppRoutes = {
@@ -56,6 +73,17 @@ var IsomorphicTestAppRoutes = {
             
             return ctx;
         },
+    },
+    login: {
+        path: '/login/',
+        context: function (router, app, segs) {
+            var ctx = {};
+            
+            ctx.title = "Login";
+            ctx.data = {};
+            
+            return ctx;
+        }
     },
 }
 

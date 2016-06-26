@@ -10,8 +10,13 @@ function IsomorphicTestAppView(vm, deps) {
             case 'home':
                 result = ["div", 
                     ['div', deps.app.context.data ? deps.app.context.data() : "Loading..."],
+                    ['br'],
                     ["a", {href: deps.router.href("contact_list", {})}, 
-                    "Contact List"]];
+                    "Contact List"],
+                    ['br'],
+                    ['br'],
+                    ["a", {href: deps.router.href("login", {})}, 
+                    "Login"]];
                 break;
             case 'contact_list':
                 result = ["div", 
@@ -19,6 +24,14 @@ function IsomorphicTestAppView(vm, deps) {
                     ["br"], 
                     ["a", {href: deps.router.href("home", {})}, 
                     "Go home now"]];
+                break;
+            case 'login':
+                result = ["div",
+                    [w.LoginWidget, {auth: deps.app.auth}],
+                    ['br'],
+                    ["a", {href: deps.router.href("home", {})}, 
+                    "Go home now"]
+                ];
                 break;
             default:
                 result = ["span", "It looks like you are lost. Let's ", ["a", {href: deps.router.href("home", {})}, 
@@ -30,6 +43,7 @@ function IsomorphicTestAppView(vm, deps) {
         
         return ['div#domvm', {class: server_rendered ? '.server' : '.client'}, 
             ["div", txt],
+            deps.app.auth.user() ? ["div", "You are logged in as " + JSON.stringify(deps.app.auth.user())] : null,
             ["div", deps.app.errorMessage],
             ['br'], ['br'],
             result];

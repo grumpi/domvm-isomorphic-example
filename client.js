@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function () {
         app = new example_app.IsomorphicTestApp();
         app.viewContextURL = 'http://127.0.0.1:8000/data/';
+        app.loginURL = 'http://127.0.0.1:8000/api/login/';
+        app.logoutURL = 'http://127.0.0.1:8000/api/logout/';
         
         app.cache = cache;
         Object.keys(initData).map(function (k) {
