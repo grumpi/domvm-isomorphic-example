@@ -39,14 +39,8 @@ app.get('/data/:what/', function (req, res) {
         }).then(
             function (result) {
                 res.status(200);
-                
-                if(Math.random() > 0.2) {
-                    res.json(result);
-                    console.log(['SPA server: sent!', result]);
-                } else {
-                    res.json(42);
-                    console.log(['SPA server: sent 42 instead of real data to see how the client handles it']);
-                }
+                res.json(result);
+                console.log(['SPA server: sent!', result]);
             },
             function (error) {
                 error.data.json().then(function (body) {
