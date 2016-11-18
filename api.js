@@ -9,9 +9,8 @@ module.exports = function (app, prefix) {
         setTimeout(function () {
             if (req.body.password === 'test' && req.body.username === 'test') {
                 res.cookie('domvm-isomorphic-example-login-cookie', 'example-session-value', { maxAge: 900000, httpOnly: true });
-                res.json(userData);
+                res.json({result: userData});
             } else {
-                res.status(404);
                 res.json({error: "Login failed. Try logging in with username 'test' and password 'test'."});
             }
         }, 2000);
@@ -22,15 +21,15 @@ module.exports = function (app, prefix) {
         
         setTimeout(function () {
             res.clearCookie('domvm-isomorphic-example-login-cookie');
-            res.send('You were logged out');
+            res.json({result: 'You were logged out'});
         }, 2000);
     });
     
-    app.get(prefix+'/who-am-i/', function (req, res) {
+    app.get(prefix+'/init/', function (req, res) {
         if (req.cookies['domvm-isomorphic-example-login-cookie'] === 'example-session-value') {
-            res.json(userData);
+            res.json({result: userData});
         } else {
-            res.json(null);
+            res.json({result: null});
         }
     });
 

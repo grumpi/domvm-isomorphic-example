@@ -4,49 +4,8 @@ var loadContext = require('./context');
 function IsomorphicTestApp() {
     var self = this;
 
-    this.w = domvm.watch(function(e) {
-		if (typeof document !== 'undefined') {
-            console.log(["domvm.watch triggered redraw", e]);
-            self.view.redraw();
-        }
-	});
-    
-    this.globalErrorMessage = null;
-    
-    this.context = {};
-   
-    this.auth = {
-        user: self.w.prop(null),
-        loginErrorMessage: self.w.prop(null),
-        
-        username: domvm.watch().prop('test'),
-        password: domvm.watch().prop(''),
-        
-        loginFunction: function (username, password) {
-            console.log(['loginFunction', username, password]);
-            return self.w.post(self.loginURL, {username: username, password: password});
-        },
-        
-        logoutFunction: function () {
-            console.log('logoutFunction');
-            
-            return self.w.post(self.logoutURL, null, [function (res) {
-                console.log('clearing cache');
-                console.log(self.cache);
-                self.cache.clear();
-                return res;
-            }]);
-        },
-        
-        whoAmIFunction: function () {
-            console.log('whoAmIFunction');
-            
-            return self.w.get(self.whoAmIURL, [function (res) {
-                console.log(['I am', res]);
-                self.auth.user(res);
-            }]);
-        },
-    };
+    this.globalErrorMessage = null;    
+    this.context = {};   
 }
 
 var IsomorphicTestAppRoutes = {
@@ -56,12 +15,16 @@ var IsomorphicTestAppRoutes = {
             var ctx = {};
             ctx.title = "Home";
             
-            ctx.data = app.w.prop('Loading...');
+            ctx.data = domvm.prop('Loading...');
             
-            ctx.ready = loadContext(app, ctx, 'home', ctx.data)
-            .catch(
+            ctx.ready = loadContext(app, ctx, 'home').then(function (res) {
+                    ctx.data(res);                    
+                    app.view && app.view.redraw();
+                    return ctx;
+                },
                 function (err) {
                     ctx.data('Message could not be loaded from the server.');
+                    app.view && app.view.redraw();
                     return ctx;
                 }
             );
@@ -75,16 +38,20 @@ var IsomorphicTestAppRoutes = {
             var ctx = {};
             
             ctx.title = "Contact list";
-            ctx.data = app.w.prop([{id: -1, value: "Loading..."}]);
-            ctx.query = domvm.watch().prop('');
+            ctx.data = domvm.prop([{id: -1, value: "Loading..."}]);
+            ctx.query = domvm.prop('');
             
-            ctx.ready = loadContext(app, ctx, 'contact-list', ctx.data)
-            .catch(
+            ctx.ready = loadContext(app, ctx, 'contact-list').then(
+                function (res) {
+                    ctx.data(res);
+                    app.view && app.view.redraw();
+                    return ctx;
+                },
                 function (err) {
                     ctx.data([{id: -1, value: "Error fetching data!"}]);
+                    app.view && app.view.redraw();
                     return ctx;
-                }
-            );
+            });
             
             return ctx;
         },
@@ -118,7 +85,7 @@ function makeOnenter(router, app, context, route) {
         );
         
         document.title = app.context.title;
-        app.view.redraw();
+        app.view && app.view.redraw();
     }
     return wrappedOnenter;
 }

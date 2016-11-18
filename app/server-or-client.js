@@ -1,1 +1,1 @@
-module.exports = typeof document === 'undefined';
+module.exports = document === null;

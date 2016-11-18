@@ -12,14 +12,15 @@
   "author": "",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "express": "~4.13.4",
+    "axios": "^0.15.2",
+    "body-parser": "~1.15.1",
     "browserify-middleware": "~7.0.0",
     "compression": "~1.6.1",
-    "html-escape": "~2.0.0",
-    "kizzy": "0.0.5",
-    "body-parser": "~1.15.1",
     "cookie-parser": "~1.4.3",
+    "es6-promise": "~3.2.1",
+    "express": "~4.13.4",
+    "html-escape": "~2.0.0",
     "isomorphic-fetch": "~2.2.1",
-    "es6-promise": "~3.2.1"
+    "kizzy": "0.0.5"
   }
 }

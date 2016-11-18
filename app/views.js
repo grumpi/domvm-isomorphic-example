@@ -1,5 +1,10 @@
 var w = require('./widgets');
+var t = require('./templates');
 var server_rendered = require('./server-or-client');
+
+var el = domvm.defineElement,
+    tx = domvm.defineText,
+    vw = domvm.defineView;
 
 function IsomorphicTestAppView(vm, deps) {
     return function() {
@@ -8,46 +13,43 @@ function IsomorphicTestAppView(vm, deps) {
         
         switch (route.name) {
             case 'home':
-                result = ["div", 
-                    ['div', deps.app.context.data ? deps.app.context.data() : "Loading..."],
-                    ['br'],
-                    ["a", {href: deps.router.href("contact_list", {})}, 
-                    "Contact List"],
-                    ['br'],
-                    ['br'],
-                    ["a", {href: deps.router.href("login", {})}, 
-                    "Login"]];
+                result = el("div", [
+                    el('div', [deps.app.context.data ? tx(deps.app.context.data()) : tx("Loading...")]),
+                    el('br'),
+                    t.link(deps.router, ['contact_list'],  null, "Contact List"),
+                    el('br'),
+                    el('br'),
+                    t.link(deps.router, ['login'], null, "Login"),
+                    ]);
                 break;
             case 'contact_list':
-                result = ["div", 
-                    [w.ContactListWidget, {data: deps.app.context.data, query: deps.app.context.query }],
-                    ["br"], 
-                    ["a", {href: deps.router.href("home", {})}, 
-                    "Go home now"]];
+                result = el("div", [
+                    vw(w.ContactListWidget, {data: deps.app.context.data, query: deps.app.context.query }),
+                    el("br"), 
+                    t.link(deps.router, ['home'], null, "Go home now"),
+                    ]);
                 break;
             case 'login':
-                result = ["div",
-                    [w.LoginWidget, {auth: deps.app.auth}],
-                    ['br'],
-                    ["a", {href: deps.router.href("home", {})}, 
-                    "Go home now"]
-                ];
+                result = el("div", [
+                    vw(w.LoginWidget, {auth: deps.app.auth}),
+                    el('br'),
+                    t.link(deps.router, ['home'],  null, "Go home now"),
+                ]);
                 break;
             default:
-                result = ["span", "It looks like you are lost. Let's ", ["a", {href: deps.router.href("home", {})}, 
-                    "go home"], "."];
+                result = el("span", [tx("It looks like you are lost. Let's "), t.link(deps.router, ['home'],  null, "go home"), tx(".")]);
                 break;
         }
         
         var txt = server_rendered ? "Server" : "Client";
         
-        return ['div#domvm', {class: server_rendered ? '.server' : '.client'}, 
-            ["div", txt],
-            deps.app.auth.user() ? ["div", "You are logged in as " + JSON.stringify(deps.app.auth.user())] : null,
-            ["div", deps.app.globalErrorMessage],
-            ["div", deps.app.context.errorMessage],
-            ['br'], ['br'],
-            result];
+        return el('div#domvm', {class: server_rendered ? '.server' : '.client'}, [
+            el("div", txt),
+            deps.app.auth.user() ? el("div", "You are logged in as " + JSON.stringify(deps.app.auth.user())) : null,
+            el("div", deps.app.globalErrorMessage),
+            el("div", deps.app.context.errorMessage),
+            el('br'), el('br'),
+            result]);
     };
 }
 

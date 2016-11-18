@@ -1,33 +1,29 @@
-function loadContext (app, context, what, okCallback, errorCallback) {
-    console.log("fetching context for route '"+what+"'.");
-    var url = app.viewContextURL + what + '/';
-    var cached = app.cache.get(what);
-    
+function loadContext (app, context, what, params, body) {
+    console.log("client fetching context for route '"+what+"'.");
+    var path = 'data/' + what + '/';
+    var key = what+JSON.stringify(params);
+    var cached = app.cache.get(key);
+
+    function onOk (res) {
+        app.cache.set(key, res);
+        return Promise.resolve(res);
+    }
+
+    function onError (err) {
+        context.errorMessage = err.message;
+        return Promise.reject(err);
+    }
+
     if (cached) {
         console.log("We had something cached.");
-        okCallback(cached);
         return Promise.resolve(cached);
     } else {
-        function onOk (res) {
-            app.cache.set(what, res);
-            okCallback(res);
-            return res;
-        }
-        
-        function onError (err) {
-            if (err.data) {
-                return err.data.json().then(function (body) {
-                    context.errorMessage = err.message + " (" + JSON.stringify(body) + ")";
-                    errorCallback(err);
-                });
-            } else {
-                context.errorMessage = err.message + " - It looks like I'm offline or the server currently isn't reachable for some other reason.";
-                errorCallback(err);
-            }
-        }
-        
         console.log("Nothing cached, fetching context from the SPA server.");
-        return app.w.get(url, [onOk, onError]);
+        return app.http.fetchSpaServer(path, {
+            method: 'GET',
+            params: params ? params : null,
+            body: body ? body : null,
+            }).then(onOk, onError);
     }
 }
 
